@@ -1,0 +1,5 @@
+SubDir TOP projects foobar ;
+
+Module foobar : main.c ;
+
+UseModule foobar ;
