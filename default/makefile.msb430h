@@ -55,14 +55,14 @@ USEMODULE += uart0
 USEMODULE += vtimer
 USEMODULE += sht11
 #USEMODULE += powermon
-#USEMODULE += ltc4150
+USEMODULE += ltc4150
 USEMODULE += ps
 #USEMODULE += sys_config
 #USEMODULE += gpioint
 USEMODULE += cc110x_ng
 USEMODULE += transceiver
-#USEMODULE += rtc
-#USEMODULE += mci
+USEMODULE += rtc
+USEMODULE += mci
 USEMODULE += posix
 USEMODULE += config
 #USEMODULE += cmdengine
@@ -95,7 +95,7 @@ export CFLAGS
 BASELIBS += $(RIOTBOARD)/$(BOARD)/bin/$(BOARD)_base.a
 BASELIBS += $(PROJBINDIR)/project.a
 
-INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTBASE)/cpu/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/
+INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTBASE)/cpu/$(CPU)/include -I$(RIOTBASE)/cpu/arm_common/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/
 
 export INCLUDES
 

@@ -12,7 +12,7 @@
 #include <board_uart0.h>
 #include <transceiver.h>
 
-static int shell_readc() {
+static int shell_readc(void) {
     char c = 0;
     (void) posix_read(uart0_handler_pid, &c, 1);
     return c;
