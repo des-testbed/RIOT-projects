@@ -10,6 +10,7 @@
 //#include <board_uart0.h>
 #include <shell.h>
 #include <shell_commands.h>
+#include <board.h>
 
 int main(void)
 {
