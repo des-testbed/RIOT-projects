@@ -22,9 +22,16 @@ int main(void)
     rtc_get_localtime(&localt);
     printf("The time is now: %s\n", asctime(&localt));
 
-    printf("Hold on a second...\n");
-    vtimer_usleep(1000000);
+    /* fancy greeting */
+    printf("Hold on half a second...\n");
+    LED_RED_ON();
+    vtimer_usleep(500000);
+    LED_RED_OFF();
+    LED_GREEN_ON();
+    LED_GREEN_OFF();
+
     printf("You may use the shell now.\n");
+    printf("Type help for help, ctrl+c to exit.\n");
 
     shell_init(&shell, NULL, getchar, putchar);
     shell_run(&shell);
