@@ -11,7 +11,6 @@
 #include <shell.h>
 #include <shell_commands.h>
 
-
 int main(void)
 {
     struct tm localt;
@@ -24,9 +23,9 @@ int main(void)
 
     /* fancy greeting */
     printf("Hold on half a second...\n");
-    LED_RED_ON();
+    LED_RED_TOGGLE();
     vtimer_usleep(500000);
-    LED_RED_OFF();
+    LED_RED_TOGGLE();
     LED_GREEN_ON();
     LED_GREEN_OFF();
 
