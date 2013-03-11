@@ -2,7 +2,7 @@
 #### Sample Makefile for building apps with the RIOT OS
 ####
 #### The Sample Filesystem Layout is:
-#### /this makefile
+#### /this Makefile
 #### ../../RIOT 
 #### ../../RIOT/board   for board definitions (if you have one or more)
 #### 
@@ -84,7 +84,7 @@ PROJECT = default
 export BOARD = msb-430h
 
 # mandatory include! 
-include $(RIOTBASE)/makefile.modules 
+include $(RIOTBASE)/Makefile.modules 
 
 # if you want to publish the board into the sources as an uppercase #define
 BB = $(shell echo $(BOARD)|tr 'a-z' 'A-Z')

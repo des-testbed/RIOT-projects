@@ -2,7 +2,7 @@
 #### Sample Makefile for building apps with the RIOT OS
 ####
 #### The Sample Filesystem Layout is:
-#### /this makefile
+#### /this Makefile
 #### ../RIOT 
 #### ../RIOT/board   for board definitions (if you have one or more)
 #### 
@@ -59,7 +59,7 @@ LINKFLAGS = -mmcu=$(MCU) -lgcc $(RIOTBASE)/bin/startup.o
 #USEMODULE += net_mm
 
 # mandatory include! 
-include $(RIOTBASE)/makefile.modules 
+include $(RIOTBASE)/Makefile.modules 
 
 #### Project Config 
 

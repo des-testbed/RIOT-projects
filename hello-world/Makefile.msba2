@@ -2,7 +2,7 @@
 #### Sample Makefile for building apps with the RIOT OS
 ####
 #### The Sample Filesystem Layout is:
-#### /this makefile
+#### /this Makefile
 #### ../RIOT 
 #### ../RIOT/board   for board definitions (if you have one or more)
 #### 
@@ -14,20 +14,19 @@ export RIOTBASE =/home/oleg/git/RIOT
 export RIOTBOARD =$(RIOTBASE)/board
 
 # the cpu to build for
-export CPU = msp430x16x
-export MCU = msp430x1612
+export CPU = lpc2387
 
 # toolchain config
-export PREFIX = @msp430-
+export PREFIX = @arm-elf-
 export CC = @$(PREFIX)gcc
 export AR = @$(PREFIX)ar
-export CFLAGS += -std=gnu99 -Wstrict-prototypes -gdwarf-2 -Os -Wall -mmcu=$(MCU)
-export ASFLAGS += -mmcu=$(MCU) --defsym $(MCU)=1 --gdwarf-2
+export CFLAGS = -std=gnu99 -O2 -Wall -Wstrict-prototypes -mcpu=arm7tdmi-s -gdwarf-2
+export ASFLAGS = -gdwarf-2 -mcpu=arm7tdmi-s
 export AS = $(PREFIX)as
 export LINK = $(PREFIX)gcc
 export SIZE = $(PREFIX)size
 export OBJCOPY = $(PREFIX)objcopy
-LINKFLAGS = -mmcu=$(MCU) -lgcc $(RIOTBASE)/bin/startup.o
+LINKFLAGS = -gdwarf-2 -mcpu=arm7tdmi-s -static -lgcc -nostartfiles -T$(RIOTBASE)/cpu/$(CPU)/linkerscript.x
 
 ## Modules to include. No autodependencies!
 
@@ -59,7 +58,7 @@ LINKFLAGS = -mmcu=$(MCU) -lgcc $(RIOTBASE)/bin/startup.o
 #USEMODULE += net_mm
 
 # mandatory include! 
-include $(RIOTBASE)/makefile.modules 
+include $(RIOTBASE)/Makefile.modules 
 
 #### Project Config 
 
@@ -67,11 +66,11 @@ include $(RIOTBASE)/makefile.modules
 PROJECT = foobar
 
 # for easy switching of boards
-export BOARD = msb-430h
+export BOARD = msba2
 
 # if you want to publish the board into the sources as an uppercase #define
 BB = $(shell echo $(BOARD)|tr 'a-z' 'A-Z')
-CFLAGS += -DBOARD=$(BB)
+CFLAGS += -DBOARD_$(BB)
 export CFLAGS
 
 # your binaries to link
