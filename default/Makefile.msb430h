@@ -2,7 +2,7 @@
 #### Sample Makefile for building apps with the RIOT OS
 ####
 #### The Sample Filesystem Layout is:
-#### /this makefile
+#### /this Makefile
 #### ../../RIOT 
 #### ../../RIOT/board   for board definitions (if you have one or more)
 #### 
@@ -14,21 +14,21 @@ export RIOTBASE =$(CURDIR)/../../RIOT
 export RIOTBOARD =$(RIOTBASE)/board
 
 # the cpu to build for
-export CPU = lpc2387
+export CPU = msp430x16x
+export MCU = msp430x1612
 
 # toolchain config
-export PREFIX = @arm-elf-
+export PREFIX = @msp430-
 export CC = @$(PREFIX)gcc
 export AR = @$(PREFIX)ar
-export CFLAGS = -std=gnu99 -O2 -Wall -Wstrict-prototypes -mcpu=arm7tdmi-s -gdwarf-2
-export ASFLAGS = -gdwarf-2 -mcpu=arm7tdmi-s
+export CFLAGS += -std=gnu99 -Wstrict-prototypes -gdwarf-2 -Os -Wall -mmcu=$(MCU)
+export ASFLAGS += -mmcu=$(MCU) --defsym $(MCU)=1 --gdwarf-2
 export AS = $(PREFIX)as
 export LINK = $(PREFIX)gcc
 export SIZE = $(PREFIX)size
 export OBJCOPY = $(PREFIX)objcopy
-FLASH = lpc2k_pgm
 TERM = pyterm.py
-LINKFLAGS = -gdwarf-2 -mcpu=arm7tdmi-s -static -lgcc -nostartfiles -T$(RIOTBASE)/cpu/$(CPU)/linkerscript.x
+LINKFLAGS = -mmcu=$(MCU) -lgcc $(RIOTBASE)/bin/startup.o
 
 PROJBINDIR = bin
 
@@ -81,14 +81,14 @@ USEMODULE += config
 PROJECT = default
 
 # for easy switching of boards
-export BOARD = msba2
+export BOARD = msb-430h
 
 # mandatory include! 
-include $(RIOTBASE)/makefile.modules 
+include $(RIOTBASE)/Makefile.modules 
 
 # if you want to publish the board into the sources as an uppercase #define
 BB = $(shell echo $(BOARD)|tr 'a-z' 'A-Z')
-CFLAGS += -DBOARD_$(BB)
+CFLAGS += -DBOARD=$(BB)
 export CFLAGS
 
 # your binaries to link
