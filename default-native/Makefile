@@ -2,7 +2,7 @@
 #### Sample Makefile for building apps with the RIOT OS
 ####
 #### The Sample Filesystem Layout is:
-#### /this makefile
+#### /this Makefile
 #### ../../RIOT 
 #### ../../boards   for board definitions (if you have one or more)
 #### 
@@ -86,6 +86,9 @@ USEMODULE += posix
 #USEMODULE += sys_config
 #USEMODULE += powermon
 
+# mandatory include! 
+include $(RIOTBASE)/Makefile.modules 
+
 #### Project Config 
 
 # name of your project
@@ -93,9 +96,6 @@ PROJECT = default-native
 
 # for easy switching of boards
 export BOARD = native
-
-# mandatory include! 
-include $(RIOTBASE)/makefile.modules 
 
 # if you want to publish the board into the sources as an uppercase #define
 BB = $(shell echo $(BOARD)|tr 'a-z' 'A-Z')
@@ -135,5 +135,5 @@ clean:
 	$(MAKE) -C $(RIOTBASE) clean
 	rm -f $(PROJBINDIR)/*
 
-doc:
-	make -BC $(RIOTBASE) doc
+#doc:
+#	make -BC $(RIOTBASE) doc
