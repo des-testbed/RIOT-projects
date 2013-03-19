@@ -115,7 +115,7 @@ all: $(PROJBINDIR)/$(PROJECT).a
 	@echo "Building project $(PROJECT) for $(BOARD) w/ MCU $(CPU)."
 	$(MAKE) -C $(RIOTBOARD)
 	$(MAKE) -C $(RIOTBASE)
-	$(LINK) $(LINKFLAGS) $(UNDEF) $(CFLAGS) -o $(PROJBINDIR)/$(PROJECT).elf -Wl,--start-group $(BASELIBS) -lrt -lm -Wl,--end-group  -Wl,-Map=$(PROJBINDIR)/$(PROJECT).map
+	$(LINK) $(LINKFLAGS) $(UNDEF) $(CFLAGS) -o $(PROJBINDIR)/$(PROJECT).elf -Wl,--start-group $(BASELIBS) -Wl,--end-group  -Wl,-Map=$(PROJBINDIR)/$(PROJECT).map -lrt -lm
 	$(SIZE) $(PROJBINDIR)/$(PROJECT).elf
 	$(OBJCOPY) -O ihex $(PROJBINDIR)/$(PROJECT).elf $(PROJBINDIR)/$(PROJECT).hex
 
