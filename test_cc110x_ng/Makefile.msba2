@@ -28,6 +28,6 @@ USEMODULE += vtimer
 USEMODULE += cc110x_ng
 #USEMODULE += fat
 
-export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBOARD)/msba2-common/include -I$(RIOTBASE)/core/include -I$(RIOTBASE)/cpu/$(CPU)/include -I$(RIOTBASE)/cpu/arm_common/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/ -I$(RIOTBASE)/drivers/cc110x_ng/include
+export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTBASE)/cpu/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/ -I$(RIOTBASE)/drivers/cc110x_ng/include
 
 include $(RIOTBASE)/Makefile.include
