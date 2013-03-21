@@ -23,14 +23,17 @@ USEMODULE += rtc
 USEMODULE += ltc4150
 USEMODULE += config
 
+# work in progress
+USEMODULE += cc110x_ng
+USEMODULE += transceiver
+
 # not yet working:
 #
-#USEMODULE += cc110x_ng
 #USEMODULE += sht11
 #USEMODULE += fat
 #USEMODULE += uart0
 
-export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTBASE)/cpu/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/
+export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTBASE)/cpu/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/ -I$(RIOTBASE)/drivers/cc110x_ng/include/
 
 include $(RIOTBASE)/Makefile.include
 
