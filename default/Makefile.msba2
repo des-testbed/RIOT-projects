@@ -19,14 +19,20 @@ export RIOTBOARD =$(CURDIR)/../../boards
 
 ## Modules to include. 
 
-USEMODULE += shell
+USEMODULE += config
 USEMODULE += posix
 USEMODULE += uart0
+USEMODULE += shell
+USEMODULE += shell_commands
+USEMODULE += ps
+USEMODULE += rtc
+USEMODULE += mci
 USEMODULE += vtimer
-#USEMODULE += sht11
-#USEMODULE += ltc4150
 USEMODULE += cc110x_ng
 #USEMODULE += fat
+USEMODULE += auto_init
+USEMODULE += sht11
+USEMODULE += ltc4150
 
 export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTBASE)/cpu/$(CPU)/include -I$(RIOTBASE)/cpu/arm_common/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/
 
