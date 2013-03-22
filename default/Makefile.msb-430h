@@ -1,0 +1,13 @@
+## Modules to include. No autodependencies!
+
+USEMODULE += auto_init
+USEMODULE += shell
+USEMODULE += shell_commands
+USEMODULE += uart0
+USEMODULE += vtimer
+USEMODULE += ps
+USEMODULE += cc110x_ng
+USEMODULE += transceiver
+USEMODULE += posix
+
+export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTBASE)/cpu/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/
