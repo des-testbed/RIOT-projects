@@ -26,6 +26,7 @@ USEMODULE += vtimer
 #USEMODULE += sht11
 #USEMODULE += ltc4150
 USEMODULE += cc110x_ng
+USEMODULE += auto_init
 #USEMODULE += fat
 
 export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTBASE)/cpu/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/ -I$(RIOTBASE)/drivers/cc110x_ng/include
