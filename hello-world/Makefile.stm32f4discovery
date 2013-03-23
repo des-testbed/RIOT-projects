@@ -1,0 +1,2 @@
+export RIOTBOARD =$(CURDIR)/../../thirdparty_boards
+export RIOTCPU =$(CURDIR)/../../RIOT/thirdparty_cpu
