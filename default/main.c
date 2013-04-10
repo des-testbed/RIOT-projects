@@ -33,7 +33,7 @@ int main(void) {
     (void) transceiver_start();
 #endif
     
-    (void) puts("Welcome to ukleos!");
+    (void) puts("Welcome to RIOT!");
 
     shell_init(&shell, NULL, shell_readc, shell_putchar);
 
