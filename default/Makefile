@@ -37,6 +37,6 @@ ifneq (,$(findstring msba2,$(BOARD)))
 	USEMODULE += mci
 endif
 
-export INCLUDES = -I${RIOTBASE}/sys/include/ -I${RIOTBASE}/drivers/include/
+export INCLUDES = -I${RIOTBASE}/core/include/ -I${RIOTBASE}/sys/include/ -I${RIOTBASE}/drivers/include/
 
 include $(RIOTBASE)/Makefile.include
