@@ -1,9 +1,6 @@
 debug: CFLAGS += -g
 debug: CFLAGS += -DENABLE_DEBUG
 
-ASFLAGS += -m32
-LDFLAGS += -m32
-
 # name of your project
 export PROJECT = default-native
 #
