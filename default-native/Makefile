@@ -1,6 +1,9 @@
 debug: CFLAGS += -g
 debug: CFLAGS += -DENABLE_DEBUG
 
+ASFLAGS += -m32
+LDFLAGS += -m32
+
 # name of your project
 export PROJECT = default-native
 #
@@ -26,12 +29,12 @@ USEMODULE += config
 # work in progress
 USEMODULE += cc110x_ng
 USEMODULE += transceiver
+USEMODULE += uart0
 
 # not yet working:
 #
 #USEMODULE += sht11
 #USEMODULE += fat
-#USEMODULE += uart0
 
 export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTBASE)/cpu/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/ -I$(RIOTBASE)/drivers/cc110x_ng/include/
 

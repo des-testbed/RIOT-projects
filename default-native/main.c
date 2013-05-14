@@ -23,6 +23,8 @@ int main(void)
     transceiver_init(TRANSCEIVER_CC1100);
     printf("\n\tmain(): starting transceiver\n");
     transceiver_start();
+    board_uart0_init();
+    posix_open(uart0_handler_pid, 0);
 
     printf("\n\t\t\tWelcome to RIOT\n\n");
 
@@ -40,7 +42,7 @@ int main(void)
     printf("You may use the shell now.\n");
     printf("Type help for help, ctrl+c to exit.\n");
 
-    shell_init(&shell, NULL, getchar, putchar);
+    shell_init(&shell, NULL, uart0_readc, uart0_putc);
     shell_run(&shell);
         
     return 0;
