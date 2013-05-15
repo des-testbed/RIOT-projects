@@ -5,7 +5,7 @@
 #### /this makefile
 #### ../../RIOT 
 #### ../../boards   for board definitions (if you have one or more)
-####/.. 
+####
 
 # name of your project
 export PROJECT =default
@@ -20,6 +20,23 @@ export RIOTBASE =$(CURDIR)/../../RIOT
 export RIOTCPU =$(CURDIR)/../../RIOT/cpu
 export RIOTBOARD =$(CURDIR)/../../boards
 
-include Makefile.$(BOARD)
+USEMODULE += config
+USEMODULE += posix
+USEMODULE += uart0
+USEMODULE += shell
+USEMODULE += shell_commands
+USEMODULE += ps
+USEMODULE += vtimer
+USEMODULE += cc110x_ng
+#USEMODULE += fat
+USEMODULE += auto_init
+ifneq (,$(findstring msba2,$(BOARD)))
+	USEMODULE += sht11
+	USEMODULE += ltc4150
+	USEMODULE += rtc
+	USEMODULE += mci
+endif
+
+export INCLUDES = -I${RIOTBASE}/core/include/ -I${RIOTBASE}/sys/include/ -I${RIOTBASE}/drivers/include/
 
 include $(RIOTBASE)/Makefile.include
