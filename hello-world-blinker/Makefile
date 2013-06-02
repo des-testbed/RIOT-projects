@@ -28,7 +28,8 @@ endif
 #USEMODULE += shell
 #USEMODULE += uart0
 #USEMODULE += posix
-#USEMODULE += vtimer
+USEMODULE += vtimer
+USEMODULE += auto_init
 #USEMODULE += sht11
 #USEMODULE += ltc4150
 #USEMODULE += cc110x

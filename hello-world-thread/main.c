@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include <thread.h>
-#include <msg.h>
+#include "thread.h"
+#include "msg.h"
 
 char stack[KERNEL_CONF_STACKSIZE_MAIN];
 void second_thread(void) {
