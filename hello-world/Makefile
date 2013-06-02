@@ -8,11 +8,11 @@
 #### 
 
 # name of your project
-export PROJECT =hello-world
+export PROJECT=hello-world
 
 # for easy switching of boards
 ifeq ($(strip $(BOARD)),)
-	export BOARD = msba2
+	export BOARD=msba2
 endif
 
 # this has to be the absolute path of the RIOT-base dir
@@ -34,6 +34,6 @@ endif
 #USEMODULE += cc110x
 #USEMODULE += fat
 
-export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTCPU)/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/
+export INCLUDES=-I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTCPU)/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/
 
 include $(RIOTBASE)/Makefile.include
