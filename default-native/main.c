@@ -13,6 +13,7 @@
 #include <board.h>
 #include <cc110x_ng.h>
 #include <transceiver.h>
+#include <posix_io.h>
 
 int main(void)
 {
