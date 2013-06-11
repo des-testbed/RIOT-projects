@@ -9,7 +9,7 @@ void second_thread(void) {
     
     while(1) {
         msg_receive(&m);
-//        printf("2nd: got msg from %i\n", m.sender_pid);
+        printf("2nd: got msg from %i\n", m.sender_pid);
         m.content.value++;
         msg_send(&m, m.sender_pid, true);
     }
@@ -17,8 +17,7 @@ void second_thread(void) {
 
 char second_thread_stack[KERNEL_CONF_STACKSIZE_MAIN];
 
-int main(void)
-{
+int main(void) {
     printf("Hello world!\n");
 
     msg_t m;
@@ -30,6 +29,7 @@ int main(void)
     while(1) {
                 msg_send(&m, pid, true);
                 msg_receive(&m);
-                printf("Got msg with content %i\n", m.content.value);
+                printf("Got msg with content %lu\n", m.content.value);
     }
+    return 0;
 }

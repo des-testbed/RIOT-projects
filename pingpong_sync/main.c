@@ -6,16 +6,15 @@
 void second_thread(void) {
     printf("second_thread starting.\n");
     msg_t m;
-    int i = 1;
     while(1) {
         msg_receive(&m);
-//        printf("2nd: got msg from %i\n", m.sender_pid);
+        printf("2nd: got msg from %i\n", m.sender_pid);
         m.content.value++;
         msg_reply(&m, &m);
     }
 }
 
-char second_thread_stack[8192];
+char second_thread_stack[KERNEL_CONF_STACKSIZE_MAIN];
 
 int main(void)
 {
@@ -29,6 +28,6 @@ int main(void)
 
     while(1) {
                 msg_send_receive(&m, &m, pid);
-                printf("Got msg with content %i\n", m.content.value);
+                printf("Got msg with content %lu\n", m.content.value);
     }
 }

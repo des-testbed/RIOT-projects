@@ -30,7 +30,6 @@ msg_t msg_q[RCV_BUFFER_SIZE];
 static msg_t mesg;
 static transceiver_command_t tcmd;
 static radio_packet_t p;
-static uint16_t a;
 
 static uint32_t sending_delay = SENDING_DELAY;
 
