@@ -1,3 +1,5 @@
+#define ENABLE_DEBUG 1
+
 #include "vtimer.h"
 #include "thread.h"
 #include "timex.h"
@@ -32,6 +34,9 @@ int main(void) {
 
 	while(1) {
 	  LED_GREEN_TOGGLE();
+	  timex_t now;
+	  vtimer_now(&now);
+	  timex_print(now);
 	  vtimer_usleep(SEC);
 	}
 
