@@ -25,16 +25,19 @@ endif
 
 ## Modules to include. 
 
-#USEMODULE += shell
-#USEMODULE += uart0
-#USEMODULE += posix
+USEMODULE += shell
+USEMODULE += uart0
+USEMODULE += posix
 USEMODULE += vtimer
 USEMODULE += auto_init
+USEMODULE += timex
 #USEMODULE += sht11
 #USEMODULE += ltc4150
-#USEMODULE += cc110x
+USEMODULE += cc110x_ng
 #USEMODULE += fat
+USEMODULE += lpc2387
+USEMODULE += rtc
 
-export INCLUDES=-I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTCPU)/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/
+export INCLUDES=-I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTCPU)/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/ -I$(RIOTBASE)/drivers/cc110x_ng/include/
 
 include $(RIOTBASE)/Makefile.include
