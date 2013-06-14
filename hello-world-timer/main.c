@@ -1,39 +1,62 @@
+#define ENABLE_DEBUG 1
+
 #include "vtimer.h"
 #include "thread.h"
 #include "timex.h"
+#include "shell.h"
 #include "board.h"
+#include "posix_io.h"
+#include "board_uart0.h"
+#include "transceiver.h"
 
 #define MSEC (1000)
 #define SEC (1000 * MSEC)
 
-vtimer_t t1;
-timex_t t_time;
-int timer_over_pid;
-char timer_over_buf[KERNEL_CONF_STACKSIZE_MAIN];
+timex_t start, end;
+shell_t shell;
 
-void blinker(void) {
-	while(1) {
-		LED_RED_TOGGLE();
-		vtimer_usleep(SEC);
-	}
+void print_teststart(char* str) {
+  printf("[TEST_START]\n");
+  vtimer_now(&start);
+  timex_print(start);
 }
 
+void print_testend(char* str) {
+  printf("[TEST_END]\n");
+  vtimer_now(&end);
+  timex_print(end);
+  timex_t diff = timex_sub(end, start);
+  timex_print(diff);
+}
+
+int shell_readc() {
+  char c = 0;
+  posix_read(uart0_handler_pid, &c, 1);
+  return c;
+}
+
+void shell_putchar(int c) {
+  putchar(c);
+}
+
+const shell_command_t shell_commands[] = {
+  {"start_test", "", print_teststart},
+  {"end_test", "", print_testend},
+  {NULL, NULL, NULL}
+};
+
 int main(void) {
-	
-	LED_RED_ON();
-	LED_GREEN_OFF();
 
-	timer_over_pid = thread_create(timer_over_buf,
-	                               KERNEL_CONF_STACKSIZE_MAIN,
-	                               PRIORITY_MAIN-1,
-	                               CREATE_WOUT_YIELD | CREATE_STACKTEST,
-	                               blinker,
-	                               "blinker");
+  transceiver_init(TRANSCEIVER_CC1100);
 
-	while(1) {
-	  LED_GREEN_TOGGLE();
-	  vtimer_usleep(SEC);
-	}
 
-	return 0;
+
+  vtimer_usleep(SEC);
+
+  posix_open(uart0_handler_pid, 0);
+
+  shell_init(&shell, shell_commands, uart0_readc, uart0_putc);
+  shell_run(&shell);
+
+  return 0;
 }

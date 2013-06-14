@@ -8,7 +8,7 @@
 #### 
 
 # name of your project
-export PROJECT=hello-world
+export PROJECT=sixlowpan
 
 # for easy switching of boards
 ifeq ($(strip $(BOARD)),)
@@ -35,9 +35,11 @@ USEMODULE += timex
 #USEMODULE += ltc4150
 USEMODULE += cc110x_ng
 #USEMODULE += fat
-USEMODULE += lpc2387
+USEMODULE += sixlowpan
+#USEMODULE += lpc2387
 USEMODULE += rtc
+USEMODULE += net_help
 
-export INCLUDES=-I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTCPU)/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/ -I$(RIOTBASE)/drivers/cc110x_ng/include/
+export INCLUDES=-I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTCPU)/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/ -I$(RIOTBASE)/drivers/cc110x_ng/include/ -I$(RIOTBASE)/sys/net/sixlowpan/
 
 include $(RIOTBASE)/Makefile.include
