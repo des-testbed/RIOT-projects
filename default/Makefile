@@ -27,14 +27,23 @@ USEMODULE += shell
 USEMODULE += shell_commands
 USEMODULE += ps
 USEMODULE += vtimer
-USEMODULE += cc110x_ng
 #USEMODULE += fat
 USEMODULE += auto_init
+ifneq (,$(findstring wsn430-v1_3b,$(BOARD)))
+	USEMODULE += cc110x_ng
+endif
+ifneq (,$(findstring wsn430-v1_4,$(BOARD)))
+	USEMODULE += cc2420
+endif
+ifneq (,$(findstring msb-430h,$(BOARD)))
+	USEMODULE += cc110x_ng
+endif
 ifneq (,$(findstring msba2,$(BOARD)))
 	USEMODULE += sht11
 	USEMODULE += ltc4150
 	USEMODULE += rtc
 	USEMODULE += mci
+	USEMODULE += cc110x_ng
 endif
 
 export INCLUDES = -I${RIOTBASE}/core/include/ -I${RIOTBASE}/sys/include/ -I${RIOTBASE}/drivers/include/
