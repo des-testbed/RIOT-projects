@@ -8,13 +8,13 @@
 /**
  * @file
  * @internal
- * @brief		initializes the i2c interface and starts the LM75A temperature sampling function
+ * @brief	Initializes the i2c interface and starts the LM75A temperature sampling function
  *
  * @author      Freie Universität Berlin, Computer Systems & Telematics
- * @author		Zakaria Kasmi <zkasmi@inf.fu-berlin.de>
+ * @author	Zakaria Kasmi <zkasmi@inf.fu-berlin.de>
  * @version     $Revision: 3854 $
  *
- * @note		$Id: main.c 3854 2013-05-27 15:40:01 zkasmi $
+ * @note	$Id: main.c 3854 2013-05-27 15:40:01 zkasmi $
  */
 
 #include <stdio.h>
@@ -59,7 +59,7 @@ int main(void) {
 	//switch on the green LED
 	LED_GREEN_ON;
 
-	//init the I2C
+	// init the I2C
 	if (lm75A_init(LM75A_I2C_INTERFACE, 100000, temperature_ext_interr_handler)) {
 		printf("# %-70s%10s\n", "lm75a initialization", "...[OK]");
 	} else {
