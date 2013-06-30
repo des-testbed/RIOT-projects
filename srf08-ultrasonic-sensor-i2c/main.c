@@ -16,7 +16,7 @@
  * @author		Zakaria Kasmi <zkasmi@inf.fu-berlin.de>
  * @version		$Revision: 3854 $
  *
- * @note		$Id: main.c 3854 2013-06-24 15:40:01 zkasmi $
+ * @note		$Id: main.c 3854 2013-06-24 19:40:01 zkasmi $
  */
 
 #include <stdio.h>
@@ -56,6 +56,7 @@ int main(void) {
 	LED_GREEN_ON;
 	puts("LPC2387 is ready\n");
 	srf08_start_ranging();
+
 	return EXIT_SUCCESS;
 }
 
