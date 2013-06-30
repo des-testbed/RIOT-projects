@@ -8,20 +8,20 @@
 /**
  * @file
  * @internal
- * @brief		Initialize the SRF02 ultrasonic sensor and start a continuous sampling of the distance measures.
- * 				The SRF02 ultrasonic sensor has a range of 16 cm to 6 m.
+ * @brief	Initialize the SRF02 ultrasonic sensor and start a continuous sampling of the distance measures.
+ * 			The SRF02 ultrasonic sensor has a range of 16 cm to 6 m.
  *
- * @author      Freie Universität Berlin, Computer Systems & Telematics
- * @author		Zakaria Kasmi <zkasmi@inf.fu-berlin.de>
- * @version     $Revision: 3854 $
+ * @author 	Freie Universität Berlin, Computer Systems & Telematics
+ * @author	Zakaria Kasmi <zkasmi@inf.fu-berlin.de>
+ * @version	$Revision: 3854 $
  *
- * @note		$Id: main.c 3854 2013-06-24 15:40:01 zkasmi $
+ * @note	$Id: main.c 3854 2013-06-24 15:40:01 zkasmi $
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "lpc23xx.h"                        /* LPC23xx/24xx definitions */
+#include "lpc23xx.h" 	/* LPC23xx/24xx definitions */
 #include "i2c.h"
 #include "gpioint.h"
 #include "hwtimer.h"
