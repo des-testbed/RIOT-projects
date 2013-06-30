@@ -1,54 +1,80 @@
 /*
- * Copyright (C) 2008, 2009, 2010  Kaspar Schleiser <kaspar@schleiser.de>
+ * main.c - Main function of the test_shell project.
+ * Copyright (C) 2013 Kaspar Schleiser <kaspar@schleiser.de>
+ *
+ * This source code is licensed under the GNU General Public License,
+ * Version 3. See the file LICENSE for more details.
+ */
+
+/**
+ * @file
+ * @internal
+ * @brief		shows how to set up own and use the system shell commands
+ * 				By typing help in the serial console, all the supported commands are listed.
+ *
+ * @author      Freie Universität Berlin, Computer Systems & Telematics
+ * @author 		Kaspar Schleiser <kaspar@schleiser.de>
+ * @author		Zakaria Kasmi <zkasmi@inf.fu-berlin.de>
+ * @version     $Revision: 3854 $
+ *
+ * @note		$Id: main.c 3854 2013-05-27 16:13:11 zkasmi $
  */
 
 #include <stdio.h>
 #include <string.h>
 #include <malloc.h>
-
+#include <shell_commands.h>
 #include <posix_io.h>
 #include <shell.h>
 #include <board_uart0.h>
 
-
 void print_teststart(char* str) {
-    printf("[TEST_START]\n");
+	printf("[TEST_START]\n");
+
 }
 
 void print_testend(char* str) {
-    printf("[TEST_END]\n");
+	printf("[TEST_END]\n");
 }
 
-int shell_readc() {
-    char c = 0;
-    posix_read(uart0_handler_pid, &c, 1);
-    return c;
+void print_own_test(char * str) {
+	printf("[OWN_TEST]\n");
+	printf("[OWN_TEST]: input = %s\n", str);
+}
+
+int shell_readc(void) {
+	char c = 0;
+	posix_read(uart0_handler_pid, &c, 1);
+	return c;
 }
 
 void shell_putchar(int c) {
-    putchar(c);
+	putchar(c);
 }
 
-const shell_command_t shell_commands[] = {
-    {"start_test", "", print_teststart},
-    {"end_test", "", print_testend},
-    {NULL, NULL, NULL}
-};
+const shell_command_t shell_commands[] = { { "start_test", "starts a test",
+		print_teststart }, { "end_test", "ends a test", print_testend }, {
+		"start_own_test", "starts own test", print_own_test }, { NULL, NULL,
+		NULL } };
 
 int main(void) {
-    //printf("Moin. build on %s %s SVN-Revision: %s\n", kernel_builddate, kernel_buildtime, kernel_svnrevision);
-    printf("test_shell.\n");
+	//printf("Moin. build on %s %s SVN-Revision: %s\n", kernel_builddate, kernel_buildtime, kernel_svnrevision);
+	printf("test_shell.\n");
 
-    board_uart0_init();
+	board_uart0_init();
 
-    posix_open(uart0_handler_pid, 0);
+	posix_open(uart0_handler_pid, 0);
 
-    shell_t shell;
-    shell_init(&shell, shell_commands, shell_readc, shell_putchar);
+	//define own shell 
+	shell_t shell;
+	shell_init(&shell, shell_commands, shell_readc, shell_putchar);
+	shell_run(&shell);
 
-    shell_run(&shell);
+	//init system shell
+	//shell_t sys_shell;
+	//shell_init(&sys_shell, NULL, shell_readc, shell_putchar);
+	//shell_run(&sys_shell);
 
-    return 0;
+	return 0;
 }
-
 
