@@ -9,8 +9,8 @@
  * @file
  * @internal
  * @brief		Initialize the SRF08 ultrasonic sensor and start a continuous sampling of the distance measures.
- * 		  		Up to 17 distances indicating echo's from distant objects can be measured.
- * 				The SRF08 ultrasonic sensor has a range of 3 cm to 6 m.
+ * 		  	Up to 17 distances indicating echo's from distant objects can be measured. The SRF08 ultrasonic 
+ *			sensor has a range of 3 cm to 6 m.
  *
  * @author		Freie Universität Berlin, Computer Systems & Telematics
  * @author		Zakaria Kasmi <zkasmi@inf.fu-berlin.de>
@@ -46,12 +46,12 @@ int main(void) {
 	hwtimer_init();
 	printf("# %-70s%10s\n", "hwtimer", "...[OK]");
 
-	//init the SRF08 ultrasonic sensor
+	// init the SRF08 ultrasonic sensor
 	if (srf08_init(SRF08_I2C_INTERFACE, 400000)) {
 		printf("# %-70s%10s\n", "SRF08 ultrasonic sensor initialization", "...[OK]");
 	}
 
-	//switch on the green LED
+	// switch on the green LED
 	LED_GREEN_ON;
 	puts("LPC2387 is ready\n");
 	srf08_start_ranging();
