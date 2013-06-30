@@ -29,8 +29,8 @@
 #include "board.h"
 #include "srf08-ultrasonic-sensor.h"
 
-#define SRF02_DEFAULT_ADDR 			112
-#define SRF02_COMMAND_REG			0x0
+#define SRF02_DEFAULT_ADDR 		112
+#define SRF02_COMMAND_REG		0x0
 #define SRF02_RANGE_HIGH_BYTE		0x2
 #define SRF02_RANGE_LOW_BYTE		0x3
 #define SRF02_REAL_RANGING_MODE_CM	0x51
