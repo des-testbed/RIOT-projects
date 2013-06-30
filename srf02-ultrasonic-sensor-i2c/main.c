@@ -9,7 +9,7 @@
  * @file
  * @internal
  * @brief	Initialize the SRF02 ultrasonic sensor and start a continuous sampling of the distance 
- *			measures. The SRF02 ultrasonic sensor has a range of 16 cm to 6 m.
+ *		measures. The SRF02 ultrasonic sensor has a range of 16 cm to 6 m.
  *
  * @author 	Freie Universität Berlin, Computer Systems & Telematics
  * @author	Zakaria Kasmi <zkasmi@inf.fu-berlin.de>
@@ -40,12 +40,12 @@ int main(void) {
 	hwtimer_init();
 	printf("# %-70s%10s\n", "hwtimer", "...[OK]");
 
-	//init the srf02 sensor
+	// init the srf02 sensor
 	if (srf02_init(SRF02_I2C_INTERFACE, 400000)) {
 			printf("# %-70s%10s\n", "SRF02 ultrasonic sensor initialization", "...[OK]");
 		}
 	puts("LPC2387 is ready\n");
-	//switch on the green LED
+	// switch on the green LED
 	LED_GREEN_ON;
 	printf("PI=%f\n", 3.134343);
 	srf02_start_ranging();
