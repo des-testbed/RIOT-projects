@@ -21,7 +21,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "lpc23xx.h" 	/* LPC23xx/24xx definitions */
+#include "lpc23xx.h" 	/* LPC23xx definitions */
 #include "i2c.h"
 #include "gpioint.h"
 #include "hwtimer.h"
