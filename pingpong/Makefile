@@ -113,8 +113,8 @@ export INCLUDES
 ## make script for your project. Build RIOT-base here!
 all: $(PROJBINDIR)/$(PROJECT).a
 	@echo "Building project $(PROJECT) for $(BOARD) w/ MCU $(CPU)."
-	$(MAKE) -C $(RIOTBOARD)
-	$(MAKE) -C $(RIOTBASE)
+	"$(MAKE)" -C $(RIOTBOARD)
+	"$(MAKE)" -C $(RIOTBASE)
 	$(LINK) $(LINKFLAGS) $(UNDEF) $(CFLAGS) -o $(PROJBINDIR)/$(PROJECT).elf -Wl,--start-group $(BASELIBS) -lrt -lm -Wl,--end-group  -Wl,-Map=$(PROJBINDIR)/$(PROJECT).map
 	$(SIZE) $(PROJBINDIR)/$(PROJECT).elf
 	$(OBJCOPY) -O ihex $(PROJBINDIR)/$(PROJECT).elf $(PROJBINDIR)/$(PROJECT).hex
@@ -131,8 +131,8 @@ $(PROJBINDIR)/$(PROJECT).o: main.c
 	$(CC) $(CFLAGS) $(BOARDINCLUDE) $(INCLUDES) -c main.c -o $(PROJBINDIR)/$(PROJECT).o
 
 clean:
-	$(MAKE) -C $(RIOTBOARD) clean
-	$(MAKE) -C $(RIOTBASE) clean
+	"$(MAKE)" -C $(RIOTBOARD) clean
+	"$(MAKE)" -C $(RIOTBASE) clean
 	rm -f $(PROJBINDIR)/*
 
 doc:

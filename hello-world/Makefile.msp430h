@@ -84,8 +84,8 @@ export INCLUDES
 
 ## make script for your project. Build feuerware-base here!
 all: bin/$(PROJECT).a
-	$(MAKE) -C $(RIOTBOARD)
-	$(MAKE) -C $(RIOTBASE)
+	"$(MAKE)" -C $(RIOTBOARD)
+	"$(MAKE)" -C $(RIOTBASE)
 	$(LINK) $(LINKFLAGS) $(UNDEF) -o bin/$(PROJECT).elf -Wl,--start-group $(BASELIBS) -lm -Wl,--end-group  -Wl,-Map=bin/$(PROJECT).map
 	$(SIZE) bin/$(PROJECT).elf
 	$(OBJCOPY) -O ihex bin/$(PROJECT).elf bin/$(PROJECT).hex
@@ -100,7 +100,7 @@ bin/$(PROJECT).o: main.c
 	$(CC) $(CFLAGS) $(BOARDINCLUDE) $(INCLUDES) -c main.c -o bin/$(PROJECT).o
 
 clean:
-	$(MAKE) -C $(RIOTBOARD) clean
-	$(MAKE) -C $(RIOTBASE) clean
+	"$(MAKE)" -C $(RIOTBOARD) clean
+	"$(MAKE)" -C $(RIOTBASE) clean
 	rm -f bin/*
 	
