@@ -9,8 +9,8 @@
  * @file
  * @internal
  * @brief		Initialize the SRF08 ultrasonic sensor and start a continuous sampling of the distance measures.
- * 		  	Up to 17 distances indicating echo's from distant objects can be measured. The SRF08 ultrasonic 
- *			sensor has a range of 3 cm to 6 m.
+ * 		  	Up to 17 distances indicating echo's from distant objects can be measured. The SRF08 
+ *			ultrasonic sensor has a range of 3 cm to 6 m.
  *
  * @author		Freie Universität Berlin, Computer Systems & Telematics
  * @author		Zakaria Kasmi <zkasmi@inf.fu-berlin.de>
