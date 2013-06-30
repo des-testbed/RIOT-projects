@@ -43,7 +43,7 @@ int main(void) {
 	// init the srf02 sensor
 	if (srf02_init(SRF02_I2C_INTERFACE, 400000)) {
 			printf("# %-70s%10s\n", "SRF02 ultrasonic sensor initialization", "...[OK]");
-		}
+	}
 	puts("LPC2387 is ready\n");
 	// switch on the green LED
 	LED_GREEN_ON;
