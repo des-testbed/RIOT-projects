@@ -8,15 +8,15 @@
 /**
  * @file
  * @internal
- * @brief	Initialize the SRF08 ultrasonic sensor and start a continuous sampling of the distance measures.
- * 			Up to 17 distances indicating echo's from distant objects can be measured.
- * 			The SRF08 ultrasonic sensor has a range of 3 cm to 6 m.
+ * @brief		Initialize the SRF08 ultrasonic sensor and start a continuous sampling of the distance measures.
+ * 				Up to 17 distances indicating echo's from distant objects can be measured.
+ * 				The SRF08 ultrasonic sensor has a range of 3 cm to 6 m.
  *
- * @author	Freie Universität Berlin, Computer Systems & Telematics
- * @author	Zakaria Kasmi <zkasmi@inf.fu-berlin.de>
- * @version	$Revision: 3854 $
+ * @author		Freie Universität Berlin, Computer Systems & Telematics
+ * @author		Zakaria Kasmi <zkasmi@inf.fu-berlin.de>
+ * @version		$Revision: 3854 $
  *
- * @note	$Id: main.c 3854 2013-06-24 15:40:01 zkasmi $
+ * @note		$Id: main.c 3854 2013-06-24 15:40:01 zkasmi $
  */
 
 #include <stdio.h>
