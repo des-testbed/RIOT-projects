@@ -8,8 +8,8 @@
 /**
  * @file
  * @internal
- * @brief	Initialize the SRF02 ultrasonic sensor and start a continuous sampling of the distance measures.
- * 			The SRF02 ultrasonic sensor has a range of 16 cm to 6 m.
+ * @brief	Initialize the SRF02 ultrasonic sensor and start a continuous sampling of the distance 
+ *			measures. The SRF02 ultrasonic sensor has a range of 16 cm to 6 m.
  *
  * @author 	Freie Universität Berlin, Computer Systems & Telematics
  * @author	Zakaria Kasmi <zkasmi@inf.fu-berlin.de>
