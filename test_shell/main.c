@@ -36,7 +36,6 @@ const shell_command_t shell_commands[] = {
 };
 
 int main(void) {
-    //printf("Moin. build on %s %s SVN-Revision: %s\n", kernel_builddate, kernel_buildtime, kernel_svnrevision);
     printf("test_shell.\n");
 
     board_uart0_init();
