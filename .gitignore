@@ -1,5 +1,7 @@
+*.elf
 *.hex
 *.map
 *.o
 *.a
 *~
+bin/
