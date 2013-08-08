@@ -1,57 +1,42 @@
-#include <stdlib.h>
 #include <stdio.h>
-#include <stdarg.h>
 #include <string.h>
 
 #include "hashes.h"
 #include "bloom.h"
 
-#define NUM_STRINGS 8
+#include "A.h"
+#include "B.h"
 
-const char *STR[] = {
-    "Howdy, partner.",
-    "Stick some strings in there.",
-    "Does it match? The future is cloudy.",
-    "Bloomers",
-    "Non-tropical storms.",
-    "/\\//\\/////\\/$^2*/@!5s0ElieeiTEd[]()d",
-    "Cartouche de Donnees.",
-    "This is a test of the Bloom filter."
-};
-
-
-int main(int argc, char *argv[])
+int main(void)
 {
-    struct bloom_t *bloom;
-    int nstrings = 8;
-    int i;
-
-    if (argc < 2) {
-        printf("You have to argue a string...\n");
-        exit(0);
-    }
-
-    bloom = bloom_new(2500000, 4, fnv_hash, sax_hash, sdbm_hash, djb2_hash);
+    struct bloom_t *bloom =
+        bloom_new(2<<8, 4, fnv_hash, sax_hash, sdbm_hash, djb2_hash);
 
     printf("Testing Bloom filter.\n\n");
     printf("m: %zd\nk: %zd\n\n", bloom->m, bloom->k);
 
-    for (i = 0; i < nstrings; i++) {
-        bloom_add(bloom, STR[i]);
-        printf("Added \"%s\"\n", STR[i]);
+    for (int i = 0; i < lenB; i++) {
+        bloom_add(bloom, B[i]);
+        printf("Added \"%s\"\n", B[i]);
     }
 
-    if (bloom_check(bloom, argv[1])) {
-        printf("\nString: \"%s\" is probably in the filter.\n", argv[1]);
+    int in = 0;
+    int not_in = 0;
+
+    for (int i = 0; i < lenA; i++) {
+        if (bloom_check(bloom, A[i])) {
+            in++;
+        }
+        else {
+            not_in++;
+        }
     }
-    else {
-        printf("\nString: \"%s\" is not in the filter.\n", argv[1]);
-    }
+
+    printf("\n%d elements probably in the filter.\n", in);
+    printf("\n%d elements not in the filter.\n", not_in);
 
     bloom_del(bloom);
-
     printf("\nAll done!\n");
-
     return 0;
 }
 
