@@ -12,7 +12,7 @@ export PROJECT = test_sha256
 
 # for easy switching of boards
 ifeq ($(strip $(BOARD)),)
-	export BOARD = msba2
+	export BOARD = native
 endif
 
 # this has to be the absolute path of the RIOT-base dir
