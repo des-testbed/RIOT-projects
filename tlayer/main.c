@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include "destiny/destiny.h"
+#include "destiny.h"
 #include "shell.h"
 #include "posix_io.h"
 #include "board_uart0.h"
@@ -42,7 +42,6 @@ const shell_command_t shell_commands[] = {
     {"boot", "performs 6lowpan bootstrapping", bootstrapping},
     {"ip", "shows current IPv6 addresses", ip},
     {"shows", "Show Sockets", shows},
-    {"show_reas", "Show reassembly Buffers", showReas},
     {"context", "shows 6lowpan context information", context},
     {"init_udp_server_thread", "initializes UDP server", init_udp_server_thread},
     {"init_tcp_server_thread", "initializes TCP server", init_tcp_server_thread},
@@ -56,9 +55,11 @@ const shell_command_t shell_commands[] = {
     {"tcp_bw", "tcp_bw NO_OF_PACKETS", send_tcp_bandwidth_test},
     {"boots", "start node as TCP server", boot_server},
     {"bootc", "start node as TCP client", boot_client},
-    {"pfrag", "print fragments", print_fragment_counter},
-    {"show_fifo", "prints fifo", pfifo_buf},
     {"get_rtt", "prints routing table", get_rtt},
+#ifdef ENABLE_DEBUG
+    {"show_reas", "Show reassembly Buffers", showReas},
+    {"show_fifo", "prints fifo", pfifo_buf},
+#endif
 #ifdef DBG_IGNORE
     {"ign", "ignore node", ignore},
 #endif

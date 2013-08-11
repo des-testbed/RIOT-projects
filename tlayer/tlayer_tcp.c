@@ -6,10 +6,10 @@
 #include "thread.h"
 #include "transceiver.h"
 
-#include "destiny/tcp.h"
-#include "destiny/socket.h"
+#include "tcp.h"
+#include "socket.h"
 
-#include "net_help/net_help.h"
+#include "net_help.h"
 
 #include "tlayer.h"
 
@@ -56,8 +56,8 @@ void init_tcp_server(void)
     mesg.content.ptr = (char *) &tcmd;
     msg_send_receive(&mesg, &mesg, transceiver_pid);
 
-    ipv6_init_address(&stSockAddr.sin6_addr, 0xabcd, 0x0, 0x0, 0x0, 0x3612, 0x00ff, 0xfe00, a);
-    ipv6_print_addr(&stSockAddr.sin6_addr);
+    ipv6_addr_init(&stSockAddr.sin6_addr, 0xabcd, 0x0, 0x0, 0x0, 0x3612, 0x00ff, 0xfe00, a);
+    print_ipv6_addr(&stSockAddr.sin6_addr);
 
     if(-1 == bind(SocketFD, &stSockAddr, sizeof(stSockAddr))) {
         printf("error bind failed\n");
@@ -122,8 +122,8 @@ void tcp_ch(void)
     stSockAddr.sin6_family = AF_INET6;
     stSockAddr.sin6_port = HTONS(1100);
 
-    ipv6_init_address(&stSockAddr.sin6_addr, 0xabcd, 0x0, 0x0, 0x0, 0x3612, 0x00ff, 0xfe00, current_message.node_number);
-    ipv6_print_addr(&stSockAddr.sin6_addr);
+    ipv6_addr_init(&stSockAddr.sin6_addr, 0xabcd, 0x0, 0x0, 0x0, 0x3612, 0x00ff, 0xfe00, current_message.node_number);
+    print_ipv6_addr(&stSockAddr.sin6_addr);
 
     if(-1 == connect(SocketFD, &stSockAddr, sizeof(stSockAddr))) {
         printf("Connect failed!\n");
