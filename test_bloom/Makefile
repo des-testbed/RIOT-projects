@@ -39,3 +39,7 @@ USEMODULE += bloom
 export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTCPU)/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/
 
 include $(RIOTBASE)/Makefile.include
+
+sets: generate_sets.py words.txt.gz
+	./generate_sets.py 10000 20
+

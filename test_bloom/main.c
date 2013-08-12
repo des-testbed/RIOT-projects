@@ -10,7 +10,7 @@
 int main(void)
 {
     struct bloom_t *bloom =
-        bloom_new(2<<8, 4, fnv_hash, sax_hash, sdbm_hash, djb2_hash);
+        bloom_new(2<<8, 6, fnv_hash, sax_hash, sdbm_hash, djb2_hash, kr_hash, dek_hash);
 
     printf("Testing Bloom filter.\n\n");
     printf("m: %zd\nk: %zd\n\n", bloom->m, bloom->k);
