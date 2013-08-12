@@ -12,11 +12,16 @@
 #include <msg.h>
 #include <cc110x_ng.h>
 
-#define SHELL_STACK_SIZE    (2048)
-#define RADIO_STACK_SIZE    (2048)
+#define SHELL_STACK_SIZE    (KERNEL_CONF_STACKSIZE_DEFAULT)
+#define RADIO_STACK_SIZE    (KERNEL_CONF_STACKSIZE_DEFAULT)
 
+#ifdef MODULE_MSP430_COMMON
+#define SND_BUFFER_SIZE     (10)
+#define RCV_BUFFER_SIZE     (32)
+#else
 #define SND_BUFFER_SIZE     (100)
 #define RCV_BUFFER_SIZE     (64)
+#endif
 
 #define SENDING_DELAY       (5 * 1000)
 
@@ -72,7 +77,7 @@ void sender(char *count) {
     p.length = CC1100_MAX_DATA_LENGTH;
     p.dst = 0;
 
-    sscanf(count, "snd %u", &c);
+    c = atoi(count + strlen("snd "));
     for (i = 0; i < c; i++) {
         puts(".");
         p.data = snd_buffer[i % SND_BUFFER_SIZE];
@@ -118,7 +123,8 @@ void powerdown(char *unused) {
 void set_delay(char *delay) {
     uint32_t d;
 
-    if (sscanf(delay, "delay %lu", &d) == 1) {
+    d = atoi(delay + strlen("delay "));
+    if (strlen(delay) > strlen("delay ")) {
         sending_delay = d;
     }
     else {
@@ -134,7 +140,8 @@ void ignore(char *addr) {
 
     tcmd.transceivers = TRANSCEIVER_CC1100;
     tcmd.data = &a;
-    if (sscanf(addr, "ign %hu", &a) == 1) {
+    a = atoi(delay + strlen("ign "));
+    if (strlen(addr) > strlen("ign ")) {
         printf("msg_q: %hu/%hu/%lu Transceiver PID: %i (%p), rx_buffer_next: %u\n", 
                 msg_q[63].sender_pid, msg_q[63].type, msg_q[63].content.value, transceiver_pid, &transceiver_pid, rx_buffer_next);
         printf("sending to transceiver (%u): %u\n", transceiver_pid, (*(uint8_t*)tcmd.data));
