@@ -3,9 +3,9 @@
 ####
 #### The Sample Filesystem Layout is:
 #### /this makefile
-#### ../../RIOT 
+#### ../RIOT
 #### ../../boards   for board definitions (if you have one or more)
-#### 
+####
 
 # name of your project
 export PROJECT =tlayer
@@ -16,8 +16,8 @@ export BOARD = msba2
 endif
 
 # this has to be the absolute path of the RIOT-base dir
-export RIOTBASE =$(CURDIR)/../../RIOT
-export RIOTCPU =$(CURDIR)/../../RIOT/cpu
+export RIOTBASE =$(CURDIR)/../RIOT
+export RIOTCPU =$(CURDIR)/../RIOT/cpu
 export RIOTBOARD =$(CURDIR)/../../boards
 
 ## Modules to include. 
