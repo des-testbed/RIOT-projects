@@ -7,15 +7,13 @@
 
 #include "ltc4150.h"
 
-#include "sixlowpan/sixlowpan.h"
-#include "sixlowpan/sixlowborder.h"
-#include "sixlowpan/sixlowerror.h"
-#include "sixlowpan/sixlowmac.h"
+#include "sixlowpan.h"
+#include "ipv6.h"
 
-#include "destiny/socket.h"
+#include "socket.h"
 
-#include "net_help/net_help.h"
-#include "net_help/msg_help.h"
+#include "net_help.h"
+#include "msg_help.h"
 
 #include "tlayer.h"
 
@@ -33,6 +31,12 @@ char tcp_close_thread_stack[TCP_CLOSE_THREAD_STACK_SIZE];
 
 uint8_t udp_server_thread_pid;
 char udp_server_stack_buffer[UDP_APP_STACK_SIZE];
+
+void print_ipv6_addr(const ipv6_addr_t *ipv6_addr)
+{
+    char addr_str[IPV6_MAX_ADDR_STR_LEN];
+    printf("%s\n", ipv6_addr_to_str(addr_str, ipv6_addr));
+}
 
 /* initializes node */
 void init(char *str)
@@ -52,7 +56,7 @@ void init(char *str)
         printf("\tradio_address must be an 8 bit integer\n");
     }
 
-    ipv6_init_address(&std_addr, 0xABCD, 0, 0, 0, 0x1034, 0x00FF, 0xFE00, r_addr);
+    ipv6_addr_init(&std_addr, 0xABCD, 0, 0, 0, 0x1034, 0x00FF, 0xFE00, r_addr);
 
     switch(command) {
         case 'h':
@@ -63,7 +67,7 @@ void init(char *str)
                 return;
             }
 
-            sixlowpan_init(TRANSCEIVER_CC1100, r_addr, 0);
+            sixlowpan_lowpan_init(TRANSCEIVER_CC1100, r_addr, 0);
             break;
 
         case 'r':
@@ -74,7 +78,7 @@ void init(char *str)
                 return;
             }
 
-            sixlowpan_init(TRANSCEIVER_CC1100, r_addr, 0);
+            sixlowpan_lowpan_init(TRANSCEIVER_CC1100, r_addr, 0);
             ipv6_init_iface_as_router();
             break;
 
@@ -86,7 +90,7 @@ void init(char *str)
                 return;
             }
 
-            sixlowpan_adhoc_init(TRANSCEIVER_CC1100, &std_addr, r_addr);
+            sixlowpan_lowpan_adhoc_init(TRANSCEIVER_CC1100, &std_addr, r_addr);
             break;
 
         case 'b':
@@ -97,7 +101,7 @@ void init(char *str)
                 return;
             }
 
-            res = border_initialize(TRANSCEIVER_CC1100, &std_addr);
+            res = sixlowpan_lowpan_border_init(TRANSCEIVER_CC1100, &std_addr);
 
             switch(res) {
                 case(SUCCESS):
@@ -106,7 +110,7 @@ void init(char *str)
 
                 case(SIXLOWERROR_ADDRESS):
                     printf("ERROR: Illegal IP address: ");
-                    ipv6_print_addr(&std_addr);
+                    print_ipv6_addr(&std_addr);
                     break;
 
                 default:
@@ -132,7 +136,7 @@ void init(char *str)
 /* performs 6lowpan bootstrapping */
 void bootstrapping(char *str)
 {
-    sixlowpan_bootstrapping();
+    sixlowpan_lowpan_bootstrapping();
 }
 
 void boot_server(char *str)
@@ -166,7 +170,7 @@ void context(char *str)
 
         if(context != NULL) {
             printf("%2d\tLifetime: %5u\tLength: %3d\t", context->num, context->lifetime, context->length);
-            ipv6_print_addr(&(context->prefix));
+            print_ipv6_addr(&(context->prefix));
         }
     }
 }
@@ -178,10 +182,18 @@ void shows(char *str)
 }
 
 /* shows reassembling buffer */
+#if ENABLE_DEBUG
 void showReas(char *str)
 {
-    printReasBuffers();
+    sixlowpan_lowpan_print_reassembly_buffers();
 }
+
+void pfifo_buf(char *str)
+{
+    sixlowpan_lowpan_print_fifo_buffers();
+}
+#endif
+
 
 /* TODO: kill processes */
 void kill_process(char *str)
@@ -317,8 +329,8 @@ void send_udp(char *str)
 
     memset(&sa, 0, sizeof sa);
 
-    ipv6_init_address(&ipaddr, 0xabcd, 0x0, 0x0, 0x0, 0x3612, 0x00ff, 0xfe00, (uint16_t)address);
-    ipv6_print_addr(&ipaddr);
+    ipv6_addr_init(&ipaddr, 0xabcd, 0x0, 0x0, 0x0, 0x3612, 0x00ff, 0xfe00, (uint16_t)address);
+    print_ipv6_addr(&ipaddr);
 
     sa.sin6_family = AF_INET;
     memcpy(&sa.sin6_addr, &ipaddr, 16);
@@ -351,16 +363,6 @@ void close_tcp(char *str)
 {
     thread_create(tcp_close_thread_stack, TCP_CLOSE_THREAD_STACK_SIZE, PRIORITY_MAIN,
                   CREATE_STACKTEST, close_tcp_thread, "tcp_close_thread");
-}
-
-void print_fragment_counter(char *str)
-{
-    printf("Fragment Counter: %u\n", fragmentcounter);
-}
-
-void pfifo_buf(char *str)
-{
-    printFIFOBuffers();
 }
 
 void get_rtt(char *str)

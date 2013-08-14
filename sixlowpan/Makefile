@@ -32,9 +32,9 @@ USEMODULE += vtimer
 USEMODULE += auto_init
 USEMODULE += timex
 USEMODULE += cc110x_ng
+USEMOUDLE += net_help
 USEMODULE += sixlowpan
-USEMODULE += net_help
 
-export INCLUDES=-I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTCPU)/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/ -I$(RIOTBASE)/drivers/cc110x_ng/include/ -I$(RIOTBASE)/sys/net/sixlowpan/
+export INCLUDES=-I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTCPU)/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/ -I$(RIOTBASE)/drivers/cc110x_ng/include/ -I$(RIOTBASE)/sys/net/sixlowpan/include/
 
 include $(RIOTBASE)/Makefile.include
