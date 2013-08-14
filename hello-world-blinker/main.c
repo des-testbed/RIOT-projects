@@ -6,13 +6,13 @@
 #define SEC (1000 * MSEC)
 
 int main(void) {
-	LED_RED_ON();
+	LED_RED_ON;
 	printf("Hello World!\n");
 
 	vtimer_usleep(5 * SEC);
 
-	LED_RED_OFF();
-	LED_GREEN_ON();
+	LED_RED_OFF;
+	LED_GREEN_ON;
 	printf("done!\n");
 
 	return 0;
