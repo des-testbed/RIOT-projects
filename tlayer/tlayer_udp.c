@@ -3,10 +3,10 @@
 #include <stdio.h>
 #include <inttypes.h>
 
-#include "destiny/socket.h"
-#include "destiny/udp.h"
+#include "socket.h"
+#include "udp.h"
 
-#include "net_help/net_help.h"
+#include "net_help.h"
 
 void init_udp_server(void)
 {

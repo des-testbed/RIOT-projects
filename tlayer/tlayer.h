@@ -1,6 +1,8 @@
 #ifndef TLAYER_H
 #define TLAYER_H
 
+#include <ipv6.h>
+
 #define SEND_TCP_THREAD_SIZE				(4500)
 #define TCP_CLOSE_THREAD_STACK_SIZE			(4500)
 #define RECV_FROM_TCP_THREAD_STACK_SIZE1	(500)
@@ -18,6 +20,8 @@ extern uint8_t udp_server_thread_pid;
 extern uint8_t tcp_server_thread_pid;
 
 extern tcp_message_t current_message;
+
+void print_ipv6_addr(const ipv6_addr_t *ipv6_addr);
 
 /* shell commands */
 void init(char *str);
