@@ -11,6 +11,10 @@ export BOARD = native
 export RIOTBASE =$(CURDIR)/../../RIOT
 export RIOTBOARD =$(CURDIR)/../../boards
 
+ifeq (,$(findstring native,$(BOARD)))
+include $(CURDIR)/../Makefile.unsupported
+else
+
 ## Modules to include. 
 
 USEMODULE += auto_init
@@ -36,5 +40,5 @@ USEMODULE += uart0
 export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTBASE)/cpu/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/
 
 include $(RIOTBASE)/Makefile.include
-
 debug: all
+endif

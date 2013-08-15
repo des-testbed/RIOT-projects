@@ -3,7 +3,7 @@
 #include <flags.h>
 #include <kernel.h>
 
-#define STACK_SIZE  (8192)
+#define STACK_SIZE  (KERNEL_CONF_STACKSIZE_DEFAULT + KERNEL_CONF_STACKSIZE_PRINTF)
 
 char t2_stack[STACK_SIZE];
 

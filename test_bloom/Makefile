@@ -15,6 +15,9 @@ ifeq ($(strip $(BOARD)),)
 	export BOARD = msba2
 endif
 
+ifneq (,$(findstring msb-430,$(BOARD)))
+include $(CURDIR)/../Makefile.unsupported
+else
 # this has to be the absolute path of the RIOT-base dir
 export RIOTBASE =$(CURDIR)/../../RIOT
 export RIOTBOARD =$(CURDIR)/../../boards
@@ -39,6 +42,7 @@ USEMODULE += bloom
 export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTCPU)/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/
 
 include $(RIOTBASE)/Makefile.include
+endif
 
 sets: generate_sets.py words.txt.gz
 	./generate_sets.py 10000 20

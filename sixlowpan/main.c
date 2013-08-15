@@ -112,20 +112,6 @@ void send_packet(char *str){
     }
 }
 
-void set_radio_chann(char *str){
-    uint16_t chann;
-    int res = sscanf(str, "set_chann %hu", &chann);
-    if(res < 1){
-        printf("Usage: set_chann [channel]\n");
-    }
-    
-    cc110x_set_channel(chann);
-}
-
-void get_r_address(char *str){
-    printf("radio: %hu\n", cc110x_get_address());
-}
-
 void ip(char *str){
     ipv6_iface_print_addrs();
 }
@@ -146,8 +132,6 @@ void context(char *str){
 const shell_command_t shell_commands[] = {
     {"send", "", send_packet},
     {"init", "", init},
-    {"addr", "", get_r_address},
-    {"set_chann", "", set_radio_chann},
     {"boot", "", bootstrapping},
     {"ip", "", ip},
     {"context", "", context},
@@ -159,12 +143,6 @@ int main(void) {
     vtimer_init();
     
     posix_open(uart0_handler_pid, 0);
-    //struct tm now;
-    //rtc_get_localtime(&now);
-    
-    //srand((unsigned int)now.tm_sec);
-    //uint8_t random = rand() % 256;
-    //printf("address: %d\n", random);
 
     shell_t shell;
     shell_init(&shell, shell_commands, uart0_readc, uart0_putc);
