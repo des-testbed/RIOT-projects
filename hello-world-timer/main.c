@@ -13,15 +13,17 @@ char timer_over_buf[KERNEL_CONF_STACKSIZE_MAIN];
 
 void blinker(void) {
 	while(1) {
-		LED_RED_TOGGLE();
+		LED_RED_TOGGLE;
 		vtimer_usleep(SEC);
 	}
 }
 
 int main(void) {
 	
-	LED_RED_ON();
-	LED_GREEN_OFF();
+	LED_RED_ON;
+#ifdef LED_GREEN_OFF
+    LED_GREEN_OFF;
+#endif
 
 	timer_over_pid = thread_create(timer_over_buf,
 	                               KERNEL_CONF_STACKSIZE_MAIN,
@@ -31,7 +33,9 @@ int main(void) {
 	                               "blinker");
 
 	while(1) {
-	  LED_GREEN_TOGGLE();
+#ifdef LED_GREEN_TOGGLE
+	  LED_GREEN_TOGGLE;
+#endif
 	  vtimer_usleep(SEC);
 	}
 

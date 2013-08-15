@@ -12,7 +12,9 @@ int main(void) {
 	vtimer_usleep(5 * SEC);
 
 	LED_RED_OFF;
+#ifdef LED_GREEN_ON
 	LED_GREEN_ON;
+#endif
 	printf("done!\n");
 
 	return 0;

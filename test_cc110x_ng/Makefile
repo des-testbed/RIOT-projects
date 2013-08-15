@@ -15,6 +15,10 @@ ifeq ($(strip $(BOARD)),)
 	export BOARD = msba2
 endif
 
+ifneq ($(BOARD),msba2)
+include $(CURDIR)/../Makefile.unsupported
+else
+
 # this has to be the absolute path of the RIOT-base dir
 export RIOTBASE =$(CURDIR)/../../RIOT
 export RIOTCPU =$(CURDIR)/../../RIOT/cpu
@@ -33,3 +37,4 @@ USEMODULE += auto_init
 export INCLUDES = -I${RIOTBASE}/core/include/ -I${RIOTBASE}/sys/include/ -I${RIOTBASE}/drivers/include/ -I${RIOTBASE}/drivers/cc110x_ng/include/
 
 include $(RIOTBASE)/Makefile.include
+endif

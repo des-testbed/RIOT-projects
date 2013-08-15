@@ -15,6 +15,10 @@ ifeq ($(strip $(BOARD)),)
 export BOARD = msba2
 endif
 
+ifneq (,$(findstring msb-430,$(BOARD)))
+include $(CURDIR)/../Makefile.unsupported
+else
+
 # this has to be the absolute path of the RIOT-base dir
 export RIOTBASE =$(CURDIR)/../RIOT
 export RIOTCPU =$(CURDIR)/../RIOT/cpu
@@ -28,7 +32,12 @@ USEMODULE += ps
 USEMODULE += shell
 USEMODULE += shell_commands
 USEMODULE += config
+ifeq ($(BOARD),native)
+	USEMODULE += nativenet
+else ifeq($(BOARD),msba2)
 USEMODULE += cc110x_ng
+endif
+USEMODULE += transceiver
 USEMODULE += net_help
 USEMODULE += sixlowpan
 USEMODULE += destiny
@@ -39,3 +48,4 @@ USEMODULE += ltc4150
 export INCLUDES += -I$(RIOTBASE)/sys/include -I$(RIOTBASE)/drivers/include -I$(RIOTBASE)/drivers/cc110x_ng/include -I$(RIOTBASE)/sys/net/destiny -I$(RIOTBASE)/sys/net/sixlowpan/include -I$(RIOTBASE)/sys/net/net_help
 
 include $(RIOTBASE)/Makefile.include
+endif
