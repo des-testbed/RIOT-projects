@@ -24,7 +24,7 @@ USEMODULE += ltc4150
 USEMODULE += config
 
 # work in progress
-USEMODULE += cc110x_ng
+USEMODULE += nativenet
 USEMODULE += transceiver
 USEMODULE += uart0
 
@@ -33,7 +33,7 @@ USEMODULE += uart0
 #USEMODULE += sht11
 #USEMODULE += fat
 
-export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTBASE)/cpu/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/ -I$(RIOTBASE)/drivers/cc110x_ng/include/
+export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTBASE)/cpu/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/
 
 include $(RIOTBASE)/Makefile.include
 
