@@ -3,7 +3,7 @@
 ####
 #### The Sample Filesystem Layout is:
 #### /this makefile
-#### ../../RIOT 
+#### ../RIOT
 #### ../../boards   for board definitions (if you have one or more)
 #### 
 
@@ -16,7 +16,7 @@ ifeq ($(strip $(BOARD)),)
 endif
 
 # this has to be the absolute path of the RIOT-base dir
-export RIOTBASE =$(CURDIR)/../../RIOT
+export RIOTBASE =$(CURDIR)/../RIOT
 export RIOTBOARD =$(CURDIR)/../../boards
 
 ifeq ($(BOARD),stm32f4discovery)
