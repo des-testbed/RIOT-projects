@@ -2,7 +2,7 @@
 
 int main(void)
 {
-    puts("Hello foobar!\n");
+    puts("Hello World!\n");
 
     while(1);
 }

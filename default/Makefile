@@ -3,7 +3,7 @@
 ####
 #### The Sample Filesystem Layout is:
 #### /this makefile
-#### ../../RIOT 
+#### ../RIOT 
 #### ../../boards   for board definitions (if you have one or more)
 ####
 
@@ -16,18 +16,16 @@ ifeq ($(strip $(BOARD)),)
 endif
 
 # this has to be the absolute path of the RIOT-base dir
-export RIOTBASE =$(CURDIR)/../../RIOT
-export RIOTCPU =$(CURDIR)/../../RIOT/cpu
+export RIOTBASE =$(CURDIR)/../RIOT
+export RIOTCPU =$(CURDIR)/../RIOT/cpu
 export RIOTBOARD =$(CURDIR)/../../boards
 
-USEMODULE += config
 USEMODULE += posix
 USEMODULE += uart0
 USEMODULE += shell
 USEMODULE += shell_commands
 USEMODULE += ps
 USEMODULE += vtimer
-#USEMODULE += fat
 USEMODULE += auto_init
 ifneq (,$(findstring wsn430-v1_3b,$(BOARD)))
 	USEMODULE += cc110x_ng
@@ -44,8 +42,13 @@ ifneq (,$(findstring msba2,$(BOARD)))
 	USEMODULE += rtc
 	USEMODULE += mci
 	USEMODULE += cc110x_ng
+	USEMODULE += config
+endif
+ifneq (,$(findstring native,$(BOARD)))
+	USEMODULE += nativenet
+	USEMODULE += transceiver
 endif
 
-export INCLUDES = -I${RIOTBASE}/core/include/ -I${RIOTBASE}/sys/include/ -I${RIOTBASE}/drivers/include/
+export INCLUDES = -I${RIOTBASE}/core/include/ -I${RIOTBASE}/sys/include/ -I${RIOTBASE}/drivers/include/ -I$(RIOTBASE)/drivers/cc110x_ng/include
 
 include $(RIOTBASE)/Makefile.include

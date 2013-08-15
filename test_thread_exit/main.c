@@ -9,7 +9,7 @@ void second_thread(void) {
     puts("2nd: running...");
 }
 
-char second_thread_stack[8192];
+char second_thread_stack[KERNEL_CONF_STACKSIZE_DEFAULT + KERNEL_CONF_STACKSIZE_PRINTF];
 
 int main(void)
 {

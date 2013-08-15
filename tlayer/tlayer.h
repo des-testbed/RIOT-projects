@@ -1,7 +1,7 @@
 #ifndef TLAYER_H
 #define TLAYER_H
 
-#include <ipv6.h>
+#include "ipv6.h"
 
 #define SEND_TCP_THREAD_SIZE				(4500)
 #define TCP_CLOSE_THREAD_STACK_SIZE			(4500)

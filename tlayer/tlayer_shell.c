@@ -9,6 +9,7 @@
 
 #include "sixlowpan.h"
 #include "ipv6.h"
+#include "sixlowpan/ndp.h"
 
 #include "socket.h"
 
@@ -165,7 +166,7 @@ void context(char *str)
     uint8_t i;
     lowpan_context_t *context;
 
-    for(i = 0; i < LOWPAN_CONTEXT_MAX; i++) {
+    for(i = 0; i < NDP_6LOWPAN_CONTEXT_MAX; i++) {
         context = lowpan_context_num_lookup(i);
 
         if(context != NULL) {
