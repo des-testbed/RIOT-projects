@@ -18,7 +18,7 @@ endif
 # this has to be the absolute path of the RIOT-base dir
 export RIOTBASE =$(CURDIR)/../RIOT
 export RIOTCPU =$(CURDIR)/../RIOT/cpu
-export RIOTBOARD =$(CURDIR)/../../boards
+export RIOTBOARD =$(CURDIR)/../boards
 
 export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTCPU)/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/
 
