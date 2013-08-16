@@ -21,7 +21,7 @@ else
 
 # this has to be the absolute path of the RIOT-base dir
 export RIOTBASE =$(CURDIR)/../RIOT
-export RIOTBOARD =$(CURDIR)/../../boards
+export RIOTBOARD =$(CURDIR)/../boards
 
 ifeq ($(BOARD),stm32f4discovery)
 	include Makefile.$(BOARD)

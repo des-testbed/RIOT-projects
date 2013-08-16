@@ -22,7 +22,7 @@ else
 # this has to be the absolute path of the RIOT-base dir
 export RIOTBASE =$(CURDIR)/../../RIOT
 export RIOTCPU =$(CURDIR)/../../RIOT/cpu
-export RIOTBOARD =$(CURDIR)/../../boards
+export RIOTBOARD =$(CURDIR)/../boards
 
 USEMODULE += config
 USEMODULE += posix

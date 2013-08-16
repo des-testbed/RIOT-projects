@@ -15,7 +15,7 @@ export BOARD = msb-430
 
 # this has to be the absolute path of the RIOT-base dir
 export RIOTBASE =$(CURDIR)/../../RIOT
-export RIOTBOARD =$(CURDIR)/../../boards
+export RIOTBOARD =$(CURDIR)/../boards
 
 ## Modules to include. 
 
