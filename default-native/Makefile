@@ -8,7 +8,7 @@ export PROJECT = default-native
 export BOARD = native
 
 # this has to be the absolute path of the RIOT-base dir
-export RIOTBASE =$(CURDIR)/../../RIOT
+export RIOTBASE =$(CURDIR)/../RIOT
 export RIOTBOARD =$(CURDIR)/../../boards
 
 ifeq (,$(findstring native,$(BOARD)))

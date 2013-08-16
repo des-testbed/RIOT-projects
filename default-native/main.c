@@ -84,11 +84,11 @@ int main(void)
 
     /* fancy greeting */
     printf("Hold on half a second...\n");
-    LED_RED_TOGGLE();
+    LED_RED_TOGGLE;
     vtimer_usleep(500000);
-    LED_RED_TOGGLE();
-    LED_GREEN_ON();
-    LED_GREEN_OFF();
+    LED_RED_TOGGLE;
+    LED_GREEN_ON;
+    LED_GREEN_OFF;
 
     printf("You may use the shell now.\n");
     printf("Type help for help, ctrl+c to exit.\n");
