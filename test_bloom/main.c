@@ -32,11 +32,13 @@ int main(void)
         }
     }
 
-    printf("\n%d elements probably in the filter.\n", in);
-    printf("\n%d elements not in the filter.\n", not_in);
+    printf("\n");
+    printf("%d elements probably in the filter.\n", in);
+    printf("%d elements not in the filter.\n", not_in);
+    double false_positive_rate = (double) in / (double) lenA;
+    printf("%f false positive rate.\n", false_positive_rate);
 
     bloom_del(bloom);
     printf("\nAll done!\n");
     return 0;
 }
-
