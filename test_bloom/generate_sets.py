@@ -23,17 +23,16 @@ B = A[:sizeOfB]
 A = A[sizeOfB:]
 
 
-AFile = open('A.h', 'w')
-AFile.write('const int lenA = ' + str(sizeOfA) + ';\n')
-AFile.write('const char* A[' + str(sizeOfA) + '] = {')
-AFile.writelines(",".join('"' + x + '"\n' for x in A))
-AFile.write('};\n')
+SetsFile = open('sets.h', 'w')
+SetsFile.write('const int lenA = ' + str(sizeOfA) + ';\n')
+SetsFile.write('const char* A[' + str(sizeOfA) + '] = {')
+SetsFile.writelines(",".join('"' + x + '"\n' for x in A))
+SetsFile.write('};\n')
 
-BFile = open('B.h', 'w')
-BFile.write('const int lenB = ' + str(sizeOfB) + ';\n')
-BFile.write('const char* B[' + str(sizeOfB) + '] = {')
-BFile.writelines(",".join('"' + x + '"\n' for x in B))
-BFile.write('};\n')
+SetsFile.write('const int lenB = ' + str(sizeOfB) + ';\n')
+SetsFile.write('const char* B[' + str(sizeOfB) + '] = {')
+SetsFile.writelines(",".join('"' + x + '"\n' for x in B))
+SetsFile.write('};\n')
 
 
-print("A.h: sizeOfA = " + str(len(A)) +" and B.h: sizeOfB = " + str(len(B)) +  " generated...")
+print("sets.h: sizeOfA = " + str(len(A) + len(B)) +  " generated...")

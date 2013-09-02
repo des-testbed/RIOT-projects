@@ -4,8 +4,7 @@
 #include "hashes.h"
 #include "bloom.h"
 
-#include "A.h"
-#include "B.h"
+#include "sets.h"
 
 int main(void)
 {
