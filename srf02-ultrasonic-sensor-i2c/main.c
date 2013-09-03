@@ -17,7 +17,7 @@
  * @author      Zakaria Kasmi <zkasmi@inf.fu-berlin.de>
  * @version     $Revision: 3855 $
  *
- * @note        $Id: main.c 3855 2013-09-03 18:48:51 kasmi $
+ * @note        $Id: main.c 3855 2013-09-04 15:25:19 kasmi $
  */
 
 #include <stdio.h>
@@ -44,12 +44,15 @@ int main(void)
         printf("# %-70s%10s\n", "SRF02 ultrasonic sensor initialization",
                "...[OK]");
     }
+    else {
+        printf("# %-70s%10s\n", "SRF02 initialization", "...[FAILED]");
+        return EXIT_FAILURE;
+    }
 
     puts("MCU is ready\n");
     // switch on the green LED
     LED_GREEN_ON;
     srf02_start_ranging(SRF02_REAL_RANGING_MODE_CM);
-
     return EXIT_SUCCESS;
 }
 
