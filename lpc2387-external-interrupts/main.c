@@ -16,7 +16,7 @@
  * @author      Zakaria Kasmi <zkasmi@inf.fu-berlin.de>
  * @version     $Revision: 3855 $
  *
- * @note        $Id: main.c 3855 2013-09-03 19:39:33 kasmi $
+ * @note        $Id: main.c 3856 2013-09-04 15:45:03 kasmi $
  */
 
 
@@ -46,7 +46,6 @@ static void my_handler(void)
 {
     puts("handler entered");
     flag = true;
-
 }
 
 int main(void)
@@ -69,7 +68,8 @@ int main(void)
     }
     else {
         printf("# %-70s%10s\n", "External interrupt handler registration",
-               "...[failed]");
+               "...[FAILED]");
+        return EXIT_FAILURE;
     }
 
     puts("MCU is ready");
@@ -81,6 +81,5 @@ int main(void)
         }
         //hwtimer_wait(HWTIMER_TICKS(100000));
     }
-
     return EXIT_SUCCESS;
 }
