@@ -16,7 +16,7 @@
  * @author      Zakaria Kasmi <zkasmi@inf.fu-berlin.de>
  * @version     $Revision: 3854 $
  *
- * @note        $Id: main.c 3854 2013-09-03 18:40:03 kasmi $
+ * @note        $Id: main.c 3854 2013-09-04 14:16:13 kasmi $
  */
 
 #include <stdio.h>
@@ -42,8 +42,9 @@ static void temperature_ext_interrupt_task(void)
 
     for (i = 0; i < 30; i++) {
         puts(
-            "ALARMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM !!\n");
+            "ALARMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM !!\n");
     }
+
     LED_GREEN_OFF;
 }
 
@@ -67,10 +68,10 @@ int main(void)
     }
     else {
         printf("# %-70s%10s\n", "lm75a initialization", "...[FAILED]");
+        return EXIT_FAILURE;
     }
 
-    puts("LPC2387 is ready\n");
-    printf("PI=%f\n", 3.134343);
+    puts("MCU is ready\n");
     lm75A_start_sensor_sampling(temperature_ext_interrupt_task);
 
     return EXIT_SUCCESS;
