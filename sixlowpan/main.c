@@ -30,10 +30,11 @@ void init(char *str){
     char command;
     uint16_t r_addr;
     ipv6_addr_t std_addr;
+
+    command = str[5];
+    r_addr = strtol(str + 7, NULL, 10);
     
-    int res = sscanf(str, "init %c %hu", &command, &r_addr);
-    
-    if(res < 1){
+    if (strlen(str) < 5) {
         printf("Usage: init {h | r | a | e} radio_address\n");
         printf("\th\tinitialize as host\n");
         printf("\tr\tinitialize as router\n");
@@ -76,7 +77,7 @@ void init(char *str){
                 printf("ERROR: radio_address not an 8 bit integer\n");
                 return;
             }
-            res = sixlowpan_lowpan_border_init(TRANSCEIVER_CC1100, &std_addr);
+            int res = sixlowpan_lowpan_border_init(TRANSCEIVER_CC1100, &std_addr);
             switch (res) {
                 case (SUCCESS): printf("INFO: Border router initialized.\n"); break;
                 case (SIXLOWERROR_ADDRESS): printf("ERROR: Illegal IP address: "); 
