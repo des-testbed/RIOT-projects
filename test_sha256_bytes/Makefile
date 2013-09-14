@@ -8,7 +8,7 @@
 #### 
 
 # name of your project
-export PROJECT = test_sha256
+export PROJECT = test_sha256_bytes
 
 # for easy switching of boards
 ifeq ($(strip $(BOARD)),)
@@ -26,6 +26,7 @@ endif
 ## Modules to include.
 
 USEMODULE += crypto
+USEMODULE += random
 
 export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTCPU)/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/
 
