@@ -44,8 +44,9 @@ void radio(void) {
         msg_receive(&m);
         if (m.type == PKT_PENDING) {
             p = (radio_packet_t*) m.content.ptr;
-            if ((p->data[0] == SENDER_ADDR) && (p->length == PACKET_SIZE)) {
-                cur_seq = (p->data[1] << 8) + p->data[2];
+            if ((p->src == SENDER_ADDR) && (p->length == PACKET_SIZE)) {
+                puts("received");
+                cur_seq = (p->data[0] << 8) + p->data[1];
                 if (first < 0) {
                     first = cur_seq;
                 }
@@ -56,6 +57,9 @@ void radio(void) {
                     }
                 }
                 last_seq = cur_seq;
+            }
+            else {
+                printf("sender was %i\n", p->src);
             }
             p->processing--;
         }
@@ -82,12 +86,12 @@ void sender(void) {
 
     p.length = PACKET_SIZE;
     p.dst = 0;
-    snd_buffer[0] = SENDER_ADDR;
 
     puts("Start sending packets");
     while (1) {
-        snd_buffer[1] = (i & 0xFF00) >> 8;
-        snd_buffer[2] = i & 0x00FF;
+        /* filling uint8_t buffer with uint16_t sequence number */
+        snd_buffer[0] = (i & 0xFF00) >> 8;
+        snd_buffer[1] = i & 0x00FF;
         p.data = snd_buffer;
         i++;
         msg_send(&mesg, transceiver_pid, 1);
