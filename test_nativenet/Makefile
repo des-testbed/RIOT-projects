@@ -26,4 +26,12 @@ export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$
 
 include $(RIOTBASE)/Makefile.include
 debug: all
+
+FORCE:
+	touch main.c
+
+sender: CFLAGS += -DSENDER
+sender: PROJECT = test_nativenet_sender
+sender: FORCE all
+
 endif

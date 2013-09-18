@@ -97,7 +97,9 @@ void sender(void) {
 
 int main(void)
 {
+#ifndef SENDER
     int radio_pid;
+#endif
     int16_t a;
     msg_t mesg;
     transceiver_command_t tcmd;
