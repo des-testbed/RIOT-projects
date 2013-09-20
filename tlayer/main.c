@@ -15,7 +15,7 @@ static transceiver_command_t tcmd;
 
 void init_tl(char *str)
 {
-    init_transport_layer();
+    destiny_init_transport_layer();
 }
 
 #ifdef DBG_IGNORE
