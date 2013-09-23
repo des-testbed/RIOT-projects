@@ -7,7 +7,7 @@
 #include "transceiver.h"
 
 #include "tcp.h"
-#include "socket.h"
+#include "destiny/socket.h"
 
 #include "net_help.h"
 
@@ -32,13 +32,13 @@ void init_tcp_server(void)
 {
     sockaddr6_t stSockAddr;
     int read_bytes;
-    char buff_msg[MAX_TCP_BUFFER];
+    char buff_msg[DESTINY_SOCKET_MAX_TCP_BUFFER];
     int16_t a;
     transceiver_command_t tcmd;
     msg_t mesg;
 
-    memset(buff_msg, 0, MAX_TCP_BUFFER);
-    int SocketFD = socket(PF_INET6, SOCK_STREAM, IPPROTO_TCP);
+    memset(buff_msg, 0, DESTINY_SOCKET_MAX_TCP_BUFFER);
+    int SocketFD = destiny_socket(PF_INET6, SOCK_STREAM, IPPROTO_TCP);
 
     if(-1 == SocketFD) {
         perror("can not create socket");
@@ -59,28 +59,26 @@ void init_tcp_server(void)
     ipv6_addr_init(&stSockAddr.sin6_addr, 0xabcd, 0x0, 0x0, 0x0, 0x3612, 0x00ff, 0xfe00, a);
     print_ipv6_addr(&stSockAddr.sin6_addr);
 
-    if(-1 == bind(SocketFD, &stSockAddr, sizeof(stSockAddr))) {
+    if(-1 == destiny_socket_bind(SocketFD, &stSockAddr, sizeof(stSockAddr))) {
         printf("error bind failed\n");
-        close(SocketFD);
+        destiny_socket_close(SocketFD);
         return;
     }
 
-    print_internal_socket(getSocket(SocketFD));
-
-    if(-1 == listen(SocketFD, 10)) {
+    if(-1 == destiny_socket_listen(SocketFD, 10)) {
         printf("error listen failed\n");
-        close(SocketFD);
+        destiny_socket_close(SocketFD);
         return;
     }
 
     while(1) {
         read_bytes = 0;
         printf("INFO: WAITING FOR INC CONNECTIONS!\n");
-        int ConnectFD = accept(SocketFD, NULL, 0);
+        int ConnectFD = destiny_socket_accept(SocketFD, NULL, 0);
 
         if(0 > ConnectFD) {
             printf("error accept failed\n");
-            close(SocketFD);
+            destiny_socket_close(SocketFD);
             return;
         }
         else {
@@ -107,10 +105,10 @@ void tcp_ch(void)
 {
     msg_t recv_msg;
     int read_bytes = 0;
-    char buff_msg[MAX_TCP_BUFFER];
+    char buff_msg[DESTINY_SOCKET_MAX_TCP_BUFFER];
     sockaddr6_t stSockAddr;
     msg_receive(&recv_msg);
-    int SocketFD = socket(PF_INET6, SOCK_STREAM, IPPROTO_TCP);
+    int SocketFD = destiny_socket(PF_INET6, SOCK_STREAM, IPPROTO_TCP);
 
     if(-1 == SocketFD) {
         printf("cannot create socket");
@@ -125,16 +123,17 @@ void tcp_ch(void)
     ipv6_addr_init(&stSockAddr.sin6_addr, 0xabcd, 0x0, 0x0, 0x0, 0x3612, 0x00ff, 0xfe00, current_message.node_number);
     print_ipv6_addr(&stSockAddr.sin6_addr);
 
-    if(-1 == connect(SocketFD, &stSockAddr, sizeof(stSockAddr))) {
+    if(-1 == destiny_socket_connect(SocketFD, &stSockAddr, sizeof(stSockAddr))) {
         printf("Connect failed!\n");
-        close(SocketFD);
+        destiny_socket_close(SocketFD);
         return;
     }
 
     tcp_socket_id = SocketFD;
 
     while(read_bytes != -1) {
-        read_bytes = recv(SocketFD, buff_msg, MAX_TCP_BUFFER, 0);
+        read_bytes = destiny_socket_recv(SocketFD, buff_msg, 
+                                         DESTINY_SOCKET_MAX_TCP_BUFFER, 0);
 
         if(read_bytes > 0) {
             printf("--- Message: %s ---\n", buff_msg);
@@ -156,7 +155,7 @@ void send_tcp_thread(void)
             tcp_socket_id = recv_socket_id1;
         }
 
-        if(send(tcp_socket_id, (void *) current_message.tcp_string_msg, strlen(current_message.tcp_string_msg) + 1, 0) < 0) {
+        if(destiny_socket_send(tcp_socket_id, (void *) current_message.tcp_string_msg, strlen(current_message.tcp_string_msg) + 1, 0) < 0) {
             printf("Could not send %s!\n", current_message.tcp_string_msg);
         }
 
@@ -168,11 +167,12 @@ void send_tcp_thread(void)
 void recv_from_tcp_thread1(void)
 {
     int read_bytes = 0;
-    char buff_msg[MAX_TCP_BUFFER];
-    memset(buff_msg, 0, MAX_TCP_BUFFER);
+    char buff_msg[DESTINY_SOCKET_MAX_TCP_BUFFER];
+    memset(buff_msg, 0, DESTINY_SOCKET_MAX_TCP_BUFFER);
 
     while(read_bytes != -1) {
-        read_bytes = recv(recv_socket_id1, buff_msg, MAX_TCP_BUFFER, 0);
+        read_bytes = destiny_socket_recv(recv_socket_id1, buff_msg, 
+                                         DESTINY_SOCKET_MAX_TCP_BUFFER, 0);
 
         if(read_bytes > 0) {
             puts(".");
@@ -185,11 +185,12 @@ void recv_from_tcp_thread1(void)
 void recv_from_tcp_thread2(void)
 {
     int read_bytes = 0;
-    char buff_msg[MAX_TCP_BUFFER];
-    memset(buff_msg, 0, MAX_TCP_BUFFER);
+    char buff_msg[DESTINY_SOCKET_MAX_TCP_BUFFER];
+    memset(buff_msg, 0, DESTINY_SOCKET_MAX_TCP_BUFFER);
 
     while(read_bytes != -1) {
-        read_bytes = recv(recv_socket_id2, buff_msg, MAX_TCP_BUFFER, 0);
+        read_bytes = destiny_socket_recv(recv_socket_id2, buff_msg, 
+                                         DESTINY_SOCKET_MAX_TCP_BUFFER, 0);
 
         if(read_bytes > 0) {
             /* 		printf("--- Read bytes: %i, Strlen(): %i, Message: %s ---\n", read_bytes, strlen(buff_msg), buff_msg); */
@@ -199,5 +200,5 @@ void recv_from_tcp_thread2(void)
 
 void close_tcp_thread(void)
 {
-    close(tcp_socket_id);
+    destiny_socket_close(tcp_socket_id);
 }
