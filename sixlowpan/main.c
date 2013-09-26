@@ -27,14 +27,15 @@ void print_ipv6_addr(const ipv6_addr_t *ipv6_addr)
 }
 
 void init(char *str){
-    char command;
+    char *command;
     uint16_t r_addr;
     ipv6_addr_t std_addr;
+    size_t str_len = strlen(str);
 
-    command = str[5];
-    r_addr = strtol(str + 7, NULL, 10);
+    command = strtok(str, " ");
+    r_addr = (uint16_t) strtol(strtok(str, " "), NULL, 10);
     
-    if (strlen(str) < 5) {
+    if (str_len < 5) {
         printf("Usage: init {h | r | a | e} radio_address\n");
         printf("\th\tinitialize as host\n");
         printf("\tr\tinitialize as router\n");
@@ -45,7 +46,7 @@ void init(char *str){
     
     ipv6_addr_init(&std_addr,0xABCD,0,0,0,0x1034,0x00FF,0xFE00,r_addr);
     
-    switch (command) {
+    switch (command[0]) {
         case 'h':
             printf("INFO: Initialize as host on radio address %hu\n", r_addr);
             if (r_addr > 255) {
@@ -86,7 +87,7 @@ void init(char *str){
             }
             break;
         default:
-            printf("ERROR: Unknown command '%c'\n", command);
+            printf("ERROR: Unknown command '%c'\n", command[0]);
             break;
     }
 }
