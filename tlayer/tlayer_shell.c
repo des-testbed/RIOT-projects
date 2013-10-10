@@ -105,7 +105,7 @@ void init(char *str)
             res = sixlowpan_lowpan_border_init(TRANSCEIVER_CC1100, &std_addr);
 
             switch(res) {
-                case(SUCCESS):
+                case(SIXLOWERROR_SUCCESS):
                     printf("INFO: Border router initialized.\n");
                     break;
 
