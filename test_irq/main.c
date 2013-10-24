@@ -31,7 +31,6 @@ void busy_thread(void)
 
 int main(void)
 {
-    board_uart0_init();
     posix_open(uart0_handler_pid, 0);
 
     busy = 1;

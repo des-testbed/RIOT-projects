@@ -1,5 +1,5 @@
-debug: CFLAGS += -g
-debug: CFLAGS += -DENABLE_DEBUG
+valgrind: CFLAGS += -g
+valgrind: CFLAGS += -DHAVE_VALGRIND_VALGRIND_H
 
 # name of your project
 export PROJECT = default-native
@@ -17,28 +17,29 @@ else
 
 ## Modules to include. 
 
+# use auto_init with care, some modules still need to be initialized
+# and most get confused if initialized twice
 USEMODULE += auto_init
+
+USEMODULE += config
+USEMODULE += hwtimer
+USEMODULE += ltc4150 # depends on hwtimer
+USEMODULE += nativenet
+USEMODULE += posix
 USEMODULE += ps
+USEMODULE += rtc
 USEMODULE += shell
 USEMODULE += shell_commands
-USEMODULE += posix
-USEMODULE += vtimer
-USEMODULE += rtc
-USEMODULE += ltc4150
-USEMODULE += config
-
-# work in progress
-USEMODULE += nativenet
 USEMODULE += transceiver
 USEMODULE += uart0
+USEMODULE += vtimer
 
-# not yet working:
-#
-#USEMODULE += sht11
+# as of yet unsupported modules:
 #USEMODULE += fat
+#USEMODULE += sht11
 
 export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTBASE)/cpu/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/
 
 include $(RIOTBASE)/Makefile.include
-debug: all
+valgrind: all
 endif

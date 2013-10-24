@@ -1,5 +1,5 @@
-debug: CFLAGS += -g
-debug: CFLAGS += -DENABLE_DEBUG
+valgrind: CFLAGS += -g
+valgrind: CFLAGS += -DHAVE_VALGRIND_VALGRIND_H
 
 # name of your project
 export PROJECT = test_irq
@@ -30,5 +30,5 @@ USEMODULE += posix
 export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTBASE)/cpu/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/
 
 include $(RIOTBASE)/Makefile.include
-debug: all
+valgrind: all
 endif

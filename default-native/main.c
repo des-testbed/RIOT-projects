@@ -35,7 +35,7 @@ void radio(void) {
         msg_receive(&m);
         if (m.type == PKT_PENDING) {
             p = (radio_packet_t*) m.content.ptr;
-            printf("Packet waiting, process %p...\n", p);
+            printf("Got radio packet:\n");
             printf("\tLength:\t%u\n", p->length);
             printf("\tSrc:\t%u\n", p->src);
             printf("\tDst:\t%u\n", p->dst);
@@ -63,17 +63,11 @@ int main(void)
     struct tm localt;
     shell_t shell;
 
-    printf("\n\tmain(): initializing transceiver\n");
     transceiver_init(TRANSCEIVER_NATIVE);
-
-    printf("\n\tmain(): starting transceiver\n");
     transceiver_start();
-
-    printf("\n\tmain(): starting radio thread\n");
     radio_pid = thread_create(radio_stack_buffer, RADIO_STACK_SIZE, PRIORITY_MAIN-2, CREATE_STACKTEST, radio, "radio");
     transceiver_register(TRANSCEIVER_NATIVE, radio_pid);
 
-    board_uart0_init();
     posix_open(uart0_handler_pid, 0);
 
 
