@@ -73,7 +73,6 @@ int main(void)
     radio_pid = thread_create(radio_stack_buffer, RADIO_STACK_SIZE, PRIORITY_MAIN-2, CREATE_STACKTEST, radio, "radio");
     transceiver_register(TRANSCEIVER_NATIVE, radio_pid);
 
-    board_uart0_init();
     posix_open(uart0_handler_pid, 0);
 
 
