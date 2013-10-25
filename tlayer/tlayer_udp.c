@@ -4,7 +4,6 @@
 #include <inttypes.h>
 
 #include "destiny/socket.h"
-#include "udp.h"
 
 #include "net_help.h"
 

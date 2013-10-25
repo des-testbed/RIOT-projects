@@ -2,6 +2,13 @@
 #define TLAYER_H
 
 #include "ipv6.h"
+#include "transceiver.h"
+
+#ifdef MODULE_NATIVENET
+#define TRANSCEIVER TRANSCEIVER_NATIVE
+#else
+#define TRANSCEIVER TRANSCEIVER_CC1100
+#endif
 
 #define SEND_TCP_THREAD_SIZE				(4500)
 #define TCP_CLOSE_THREAD_STACK_SIZE			(4500)
