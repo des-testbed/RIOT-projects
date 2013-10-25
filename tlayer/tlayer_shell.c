@@ -11,7 +11,7 @@
 #include "ipv6.h"
 #include "sixlowpan/ndp.h"
 
-#include "socket.h"
+#include "destiny/socket.h"
 
 #include "net_help.h"
 #include "msg_help.h"
@@ -179,7 +179,7 @@ void context(char *str)
 /* shows info about open sockets */
 void shows(char *str)
 {
-    print_sockets();
+    destiny_socket_print_sockets();
 }
 
 /* shows reassembling buffer */
@@ -321,7 +321,7 @@ void send_udp(char *str)
     char text[] = "abcdefghijklmnopqrstuvwxyz0123456789!-=$%&/()";
     sscanf(str, "send_udp %i %i %s", &count, &address, text);
 
-    sock = socket(PF_INET6, SOCK_DGRAM, IPPROTO_UDP);
+    sock = destiny_socket(PF_INET6, SOCK_DGRAM, IPPROTO_UDP);
 
     if(-1 == sock) {
         printf("Error Creating Socket!");
@@ -341,7 +341,9 @@ void send_udp(char *str)
     vtimer_now(&start);
 
     for(int i = 0; i < count; i++) {
-        bytes_sent = sendto(sock, (char *)text, strlen((char *)text) + 1, 0, &sa, sizeof sa);
+        bytes_sent = destiny_socket_sendto(sock, (char *)text, 
+                                           strlen((char *)text) + 1, 0, &sa, 
+                                           sizeof sa);
 
         if(bytes_sent < 0) {
             printf("Error sending packet!\n");
@@ -357,20 +359,11 @@ void send_udp(char *str)
     printf("Start: %lu, End: %lu, Total: %lu\n", start.microseconds, end.microseconds, total.microseconds);
     secs = total.microseconds / 1000000;
     printf("Time: %lu seconds, Bandwidth: %lu byte/second\n", secs, (count * 48) / secs);
-    close(sock);
+    destiny_socket_close(sock);
 }
 
 void close_tcp(char *str)
 {
     thread_create(tcp_close_thread_stack, TCP_CLOSE_THREAD_STACK_SIZE, PRIORITY_MAIN,
                   CREATE_STACKTEST, close_tcp_thread, "tcp_close_thread");
-}
-
-void get_rtt(char *str)
-{
-    int socket;
-    sscanf(str, "get_rtt %i", &socket);
-    printf("SRTT: %f, RTO: %f, RTTVAR: %f\n", getSocket(socket)->socket_values.tcp_control.srtt,
-           getSocket(socket)->socket_values.tcp_control.rto,
-           getSocket(socket)->socket_values.tcp_control.rttvar);
 }

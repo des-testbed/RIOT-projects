@@ -20,8 +20,8 @@ include $(CURDIR)/../Makefile.unsupported
 else
 
 # this has to be the absolute path of the RIOT-base dir
-export RIOTBASE =$(CURDIR)/../RIOT
-export RIOTCPU =$(CURDIR)/../RIOT/cpu
+export RIOTBASE =$(CURDIR)/../../RIOT
+export RIOTCPU =$(CURDIR)/../../RIOT/cpu
 export RIOTBOARD =$(CURDIR)/../../boards
 
 ## Modules to include. 
@@ -45,7 +45,7 @@ USEMODULE += uart0
 USEMODULE += posix
 USEMODULE += ltc4150
 
-export INCLUDES += -I$(RIOTBASE)/sys/include -I$(RIOTBASE)/drivers/include -I$(RIOTBASE)/drivers/cc110x_ng/include -I$(RIOTBASE)/sys/net/destiny -I$(RIOTBASE)/sys/net/sixlowpan/include -I$(RIOTBASE)/sys/net/net_help
+export INCLUDES += -I$(RIOTBASE)/sys/include -I$(RIOTBASE)/drivers/include -I$(RIOTBASE)/drivers/cc110x_ng/include -I$(RIOTBASE)/sys/net/destiny/include -I$(RIOTBASE)/sys/net/destiny -I$(RIOTBASE)/sys/net/sixlowpan/include -I$(RIOTBASE)/sys/net/net_help
 
 include $(RIOTBASE)/Makefile.include
 endif

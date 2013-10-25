@@ -15,7 +15,7 @@ static transceiver_command_t tcmd;
 
 void init_tl(char *str)
 {
-    init_transport_layer();
+    destiny_init_transport_layer();
 }
 
 #ifdef DBG_IGNORE
@@ -55,7 +55,6 @@ const shell_command_t shell_commands[] = {
     {"tcp_bw", "tcp_bw NO_OF_PACKETS", send_tcp_bandwidth_test},
     {"boots", "start node as TCP server", boot_server},
     {"bootc", "start node as TCP client", boot_client},
-    {"get_rtt", "prints routing table", get_rtt},
 #ifdef ENABLE_DEBUG
     {"show_reas", "Show reassembly Buffers", showReas},
     {"show_fifo", "prints fifo", pfifo_buf},

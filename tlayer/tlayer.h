@@ -47,7 +47,6 @@ void show_nbr_cache(char *str);
 void static_routing(char *str);
 void print_fragment_counter(char *str);
 void pfifo_buf(char *str);
-void get_rtt(char *str);
 
 void init_tcp_server(void);
 void send_tcp_thread(void);

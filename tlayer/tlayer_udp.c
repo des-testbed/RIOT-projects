@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <inttypes.h>
 
-#include "socket.h"
+#include "destiny/socket.h"
 #include "udp.h"
 
 #include "net_help.h"
@@ -14,7 +14,7 @@ void init_udp_server(void)
     char buffer_main[256];
     int32_t recsize;
     uint32_t fromlen;
-    int sock = socket(PF_INET6, SOCK_DGRAM, IPPROTO_UDP);
+    int sock = destiny_socket(PF_INET6, SOCK_DGRAM, IPPROTO_UDP);
     memset(&sa, 0, sizeof(sa));
 
     sa.sin6_family = AF_INET;
@@ -22,13 +22,14 @@ void init_udp_server(void)
 
     fromlen = sizeof(sa);
 
-    if(-1 == bind(sock, &sa, sizeof(sa))) {
+    if(-1 == destiny_socket_bind(sock, &sa, sizeof(sa))) {
         printf("Error bind failed!\n");
-        close(sock);
+        destiny_socket_close(sock);
     }
 
     for(;;) {
-        recsize = recvfrom(sock, (void *)buffer_main, 256, 0, &sa, &fromlen);
+        recsize = destiny_socket_recvfrom(sock, (void *)buffer_main, 256, 0, 
+                                          &sa, &fromlen);
 
         if(recsize < 0) {
             printf("ERROR: recsize < 0!\n");
@@ -38,6 +39,6 @@ void init_udp_server(void)
         printf("datagram: %s\n", buffer_main);
     }
 
-    close(sock);
+    destiny_socket_close(sock);
 }
 
