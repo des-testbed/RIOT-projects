@@ -31,7 +31,6 @@ char recv_from_tcp_thread_stack2[RECV_FROM_TCP_THREAD_STACK_SIZE2];
 void init_tcp_server(void)
 {
     sockaddr6_t stSockAddr;
-    int read_bytes;
     char buff_msg[DESTINY_SOCKET_MAX_TCP_BUFFER];
     int16_t a;
     transceiver_command_t tcmd;
@@ -72,7 +71,6 @@ void init_tcp_server(void)
     }
 
     while(1) {
-        read_bytes = 0;
         printf("INFO: WAITING FOR INC CONNECTIONS!\n");
         int ConnectFD = destiny_socket_accept(SocketFD, NULL, 0);
 

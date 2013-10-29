@@ -14,7 +14,7 @@
 #include "destiny/socket.h"
 
 #include "net_help.h"
-#include "msg_help.h"
+#include "../msg_help.h"
 
 #include "tlayer.h"
 
@@ -55,9 +55,10 @@ void init(char *str)
         printf("\ta\tinitialize as ad-hoc router\n");
         printf("\tb\tinitialize as border router\n\n");
         printf("\tradio_address must be an 8 bit integer\n");
+        return;
     }
 
-    ipv6_addr_init(&std_addr, 0xABCD, 0, 0, 0, 0x1034, 0x00FF, 0xFE00, r_addr);
+    ipv6_addr_init(&std_addr, 0xABCD, 0xEF12, 0, 0, 0x1034, 0x00FF, 0xFE00, r_addr);
 
     switch(command) {
         case 'h':
@@ -68,7 +69,7 @@ void init(char *str)
                 return;
             }
 
-            sixlowpan_lowpan_init(TRANSCEIVER_CC1100, r_addr, 0);
+            sixlowpan_lowpan_init(TRANSCEIVER, r_addr, 0);
             break;
 
         case 'r':
@@ -79,7 +80,7 @@ void init(char *str)
                 return;
             }
 
-            sixlowpan_lowpan_init(TRANSCEIVER_CC1100, r_addr, 0);
+            sixlowpan_lowpan_init(TRANSCEIVER, r_addr, 0);
             ipv6_init_iface_as_router();
             break;
 
@@ -91,7 +92,7 @@ void init(char *str)
                 return;
             }
 
-            sixlowpan_lowpan_adhoc_init(TRANSCEIVER_CC1100, &std_addr, r_addr);
+            sixlowpan_lowpan_adhoc_init(TRANSCEIVER, &std_addr, r_addr);
             break;
 
         case 'b':
@@ -102,7 +103,7 @@ void init(char *str)
                 return;
             }
 
-            res = sixlowpan_lowpan_border_init(TRANSCEIVER_CC1100, &std_addr);
+            res = sixlowpan_lowpan_border_init(TRANSCEIVER, &std_addr);
 
             switch(res) {
                 case(SIXLOWERROR_SUCCESS):
@@ -335,7 +336,7 @@ void send_udp(char *str)
 
     sa.sin6_family = AF_INET;
     memcpy(&sa.sin6_addr, &ipaddr, 16);
-    sa.sin6_port = HTONS(7654);
+    sa.sin6_port = HTONS(0xf4);
     ltc4150_start();
     printf("Start power: %f\n", ltc4150_get_total_Joule());
     vtimer_now(&start);
@@ -358,7 +359,12 @@ void send_udp(char *str)
     printf("Used power: %f\n", ltc4150_get_total_Joule());
     printf("Start: %lu, End: %lu, Total: %lu\n", start.microseconds, end.microseconds, total.microseconds);
     secs = total.microseconds / 1000000;
-    printf("Time: %lu seconds, Bandwidth: %lu byte/second\n", secs, (count * 48) / secs);
+    if (!secs) {
+        puts("Transmission in no time!");
+    }
+    else {
+        printf("Time: %lu seconds, Bandwidth: %lu byte/second\n", secs, (count * 48) / secs);
+    }
     destiny_socket_close(sock);
 }
 

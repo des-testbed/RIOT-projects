@@ -25,7 +25,7 @@ void ignore(char *addr)
     mesg.type = DBG_IGN;
     mesg.content.ptr = (char *) &tcmd;
 
-    tcmd.transceivers = TRANSCEIVER_CC1100;
+    tcmd.transceivers = TRANSCEIVER;
     tcmd.data = &a;
 
     if(sscanf(addr, "ign %hu", &a) == 1) {
