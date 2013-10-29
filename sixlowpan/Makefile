@@ -37,6 +37,7 @@ USEMODULE += auto_init
 USEMODULE += timex
 USEMOUDLE += net_help
 USEMODULE += sixlowpan
+USEMODULE += semaphore
 USEMODULE += transceiver 
 ifeq ($(BOARD),msba2)
 	USEMODULE += cc110x_ng

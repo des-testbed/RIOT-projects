@@ -40,6 +40,7 @@ endif
 USEMODULE += transceiver
 USEMODULE += net_help
 USEMODULE += sixlowpan
+USEMODULE += semaphore
 USEMODULE += destiny
 USEMODULE += uart0
 USEMODULE += posix
