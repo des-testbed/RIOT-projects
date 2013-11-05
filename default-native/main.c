@@ -15,7 +15,7 @@
 #include "posix_io.h"
 #include "nativenet.h"
 #include "msg.h"
-#include <thread.h>
+#include "thread.h"
 
 #define SND_BUFFER_SIZE     (100)
 #define RCV_BUFFER_SIZE     (64)
@@ -27,7 +27,7 @@ msg_t msg_q[RCV_BUFFER_SIZE];
 void radio(void) {
     msg_t m;
     radio_packet_t *p;
-    uint8_t i;
+    radio_packet_length_t i;
 
     msg_init_queue(msg_q, RCV_BUFFER_SIZE);
 
