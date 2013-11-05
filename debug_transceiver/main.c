@@ -48,7 +48,7 @@ void shell_putchar(int c)
 void radio(void) {
     msg_t m;
     radio_packet_t *p;
-    uint8_t i;
+    radio_packet_length_t i;
 
     msg_init_queue(msg_q, RCV_BUFFER_SIZE);
 
