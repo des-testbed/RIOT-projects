@@ -1,0 +1,77 @@
+/**
+ * RIOT CCN MAIN APP
+ *
+ * Copyright (C) 2013 Freie Universität Berlin
+ *
+ * This file subject to the terms and conditions of the GNU Lesser General
+ * Public License. See the file LICENSE in the top level directory for more
+ * details.
+ *
+ * \{
+ * \file main.c
+ * \author Christian Mehlis <mehlis@inf.fu-berlin.de>
+ * \}
+ */
+
+// system
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <inttypes.h>
+
+// riot
+#include "thread.h"
+#include "rtc.h"
+
+// ccn
+#include "ccnl-riot.h"
+
+int relay_pid;
+
+char t2_stack[KERNEL_CONF_STACKSIZE_PRINTF];
+
+void set_address_handler(uint16_t a)
+{
+    msg_t mesg;
+    transceiver_command_t tcmd;
+
+    tcmd.transceivers = transceiver_ids;
+    tcmd.data = &a;
+    mesg.content.ptr = (char *) &tcmd;
+
+    printf("trying to set address %"PRIu16"\n", a);
+    mesg.type = SET_ADDRESS;
+
+    printf("transceiver_pid=%d\n", transceiver_pid);
+
+    msg_send_receive(&mesg, &mesg, transceiver_pid);
+    printf("got address: %"PRIu16"\n", a);
+}
+
+void populate_cache()
+{
+    msg_t m;
+    m.content.value = 0;
+    m.type = CCNL_RIOT_POPULATE;
+    msg_send(&m, relay_pid, 1);
+}
+
+void second_thread(void)
+{
+    set_address_handler(42);
+    populate_cache();
+}
+
+int main(void)
+{
+    printf("CCN!\n");
+
+    relay_pid = thread_getpid();
+
+    thread_create(t2_stack, KERNEL_CONF_STACKSIZE_PRINTF, PRIORITY_MAIN + 1, CREATE_STACKTEST, second_thread, "helper thread");
+
+    printf("starting ccn-lite relay...\n");
+    ccnl_riot_relay_start();
+
+    return 0;
+}
