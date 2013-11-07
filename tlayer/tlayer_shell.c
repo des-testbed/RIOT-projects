@@ -14,7 +14,7 @@
 #include "destiny/socket.h"
 
 #include "net_help.h"
-#include "../msg_help.h"
+#include "msg_help.h"
 
 #include "tlayer.h"
 
