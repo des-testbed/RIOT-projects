@@ -29,6 +29,7 @@
 #define RADIO_STACK_SIZE    (KERNEL_CONF_STACKSIZE_DEFAULT)
 
 #ifdef MODULE_TRANSCEIVER
+
 char radio_stack_buffer[RADIO_STACK_SIZE];
 msg_t msg_q[RCV_BUFFER_SIZE];
 
@@ -64,6 +65,41 @@ void radio(void) {
         }
     }
 }
+
+void init_transceiver()
+{
+    int radio_pid = thread_create(
+            radio_stack_buffer,
+            RADIO_STACK_SIZE,
+            PRIORITY_MAIN-2,
+            CREATE_STACKTEST,
+            radio,
+            "radio");
+
+    uint16_t transceivers = 0;
+#ifdef MODULE_CC110X
+    transceivers |= TRANSCEIVER_CC1100;
+#endif
+#ifdef MODULE_CC110X_NG
+    transceivers |= TRANSCEIVER_CC1100;
+#endif
+#ifdef MODULE_CC2420
+    transceivers |= TRANSCEIVER_CC2420;
+#endif
+#ifdef MODULE_NATIVENET
+    transceivers |= TRANSCEIVER_NATIVE;
+#endif
+#ifdef MODULE_AT86RF231
+    transceivers |= TRANSCEIVER_AT86RF231;
+#endif
+#ifdef MODULE_MC1322X
+    transceivers |= TRANSCEIVER_MC1322X;
+#endif
+
+    transceiver_init(transceivers);
+    (void) transceiver_start();
+    transceiver_register(transceivers, radio_pid);
+}
 #endif /* MODULE_TRANSCEIVER */
 
 static int shell_readc(void) {
@@ -85,46 +121,8 @@ int main(void) {
 #endif
 
 #ifdef MODULE_TRANSCEIVER
-    int radio_pid;
-#ifdef MODULE_CC110X
-    transceiver_init(TRANSCEIVER_CC1100);
+    init_transceiver();
 #endif
-#ifdef MODULE_CC110X_NG
-    transceiver_init(TRANSCEIVER_CC1100);
-#endif
-#ifdef MODULE_CC2420
-    transceiver_init(TRANSCEIVER_CC2420);
-#endif
-#ifdef MODULE_NATIVENET
-    transceiver_init(TRANSCEIVER_NATIVE);
-#endif
-#ifdef MODULE_AT86RF231
-    transceiver_init(TRANSCEIVER_AT86RF231);
-#endif
-#ifdef MODULE_MC1322X
-    transceiver_init(TRANSCEIVER_MC1322X);
-#endif
-    (void) transceiver_start();
-    radio_pid = thread_create(radio_stack_buffer, RADIO_STACK_SIZE, PRIORITY_MAIN-2, CREATE_STACKTEST, radio, "radio");
-#ifdef MODULE_CC110X
-    transceiver_register(TRANSCEIVER_CC1100, radio_pid);
-#endif
-#ifdef MODULE_CC110X_NG
-    transceiver_register(TRANSCEIVER_CC1100, radio_pid);
-#endif
-#ifdef MODULE_CC2420
-    transceiver_register(TRANSCEIVER_CC2420, radio_pid);
-#endif
-#ifdef MODULE_NATIVENET
-    transceiver_register(TRANSCEIVER_NATIVE, radio_pid);
-#endif
-#ifdef MODULE_AT86RF231
-    transceiver_register(TRANSCEIVER_AT86RF231, radio_pid);
-#endif
-#ifdef MODULE_MC1322X
-    transceiver_register(TRANSCEIVER_MC1322X, radio_pid);
-#endif
-#endif /* MODULE_TRANSCEIVER */
     
     (void) puts("Welcome to RIOT!");
 
