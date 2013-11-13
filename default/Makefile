@@ -28,6 +28,9 @@ USEMODULE += shell_commands
 USEMODULE += ps
 USEMODULE += vtimer
 USEMODULE += auto_init
+ifneq (,$(findstring msb-430,$(BOARD)))
+	USEMODULE += sht11
+endif
 ifneq (,$(findstring wsn430-v1_3b,$(BOARD)))
 	USEMODULE += cc110x_ng
 endif
