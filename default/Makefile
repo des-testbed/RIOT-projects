@@ -3,20 +3,23 @@
 ####
 #### The Sample Filesystem Layout is:
 #### /this makefile
-#### ../RIOT 
+#### ../RIOT
 #### ../../boards   for board definitions (if you have one or more)
 ####
 
 # name of your project
-export PROJECT =default
+export PROJECT = default
 
 # for easy switching of boards
 ifeq ($(strip $(BOARD)),)
-	export BOARD = msba2
+	export BOARD = native
 endif
 
 # this has to be the absolute path of the RIOT-base dir
-export RIOTBASE =$(CURDIR)/../RIOT
+export RIOTBASE =$(CURDIR)/../../RIOT
+
+# uncomment this to enable scheduler statistics for ps
+#CFLAGS += -DSCHEDSTATISTICS
 
 USEMODULE += posix
 USEMODULE += uart0
@@ -25,6 +28,9 @@ USEMODULE += shell_commands
 USEMODULE += ps
 USEMODULE += vtimer
 USEMODULE += auto_init
+ifneq (,$(findstring msb-430,$(BOARD)))
+	USEMODULE += sht11
+endif
 ifneq (,$(findstring wsn430-v1_3b,$(BOARD)))
 	USEMODULE += cc110x_ng
 endif
@@ -43,8 +49,11 @@ ifneq (,$(findstring msba2,$(BOARD)))
 	USEMODULE += config
 endif
 ifneq (,$(findstring native,$(BOARD)))
+	USEMODULE += ltc4150
+	USEMODULE += rtc
 	USEMODULE += nativenet
 	USEMODULE += transceiver
+	USEMODULE += config
 endif
 
 export INCLUDES = -I${RIOTBASE}/core/include/ -I${RIOTBASE}/sys/include/ -I${RIOTBASE}/drivers/include/ -I$(RIOTBASE)/drivers/cc110x_ng/include
