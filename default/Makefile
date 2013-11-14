@@ -31,14 +31,21 @@ USEMODULE += auto_init
 ifneq (,$(findstring msb-430,$(BOARD)))
 	USEMODULE += sht11
 endif
+ifneq (,$(findstring chronos,$(BOARD)))
+	USEMODULE += cc110x_ng
+	export INCLUDES += -I$(RIOTBASE)/drivers/cc110x_ng/include
+endif
 ifneq (,$(findstring wsn430-v1_3b,$(BOARD)))
 	USEMODULE += cc110x_ng
+	export INCLUDES += -I$(RIOTBASE)/drivers/cc110x_ng/include
 endif
 ifneq (,$(findstring wsn430-v1_4,$(BOARD)))
 	USEMODULE += cc2420
+	export INCLUDES += -I$(RIOTBASE)/drivers/cc2420/include
 endif
 ifneq (,$(findstring msb-430h,$(BOARD)))
 	USEMODULE += cc110x_ng
+	export INCLUDES += -I$(RIOTBASE)/drivers/cc110x_ng/include
 endif
 ifneq (,$(findstring msba2,$(BOARD)))
 	USEMODULE += sht11
@@ -47,6 +54,7 @@ ifneq (,$(findstring msba2,$(BOARD)))
 	USEMODULE += mci
 	USEMODULE += cc110x_ng
 	USEMODULE += config
+	export INCLUDES += -I$(RIOTBASE)/drivers/cc110x_ng/include
 endif
 ifneq (,$(findstring native,$(BOARD)))
 	USEMODULE += ltc4150
@@ -56,6 +64,6 @@ ifneq (,$(findstring native,$(BOARD)))
 	USEMODULE += config
 endif
 
-export INCLUDES = -I${RIOTBASE}/core/include/ -I${RIOTBASE}/sys/include/ -I${RIOTBASE}/drivers/include/ -I$(RIOTBASE)/drivers/cc110x_ng/include
+export INCLUDES += -I${RIOTBASE}/core/include/ -I${RIOTBASE}/sys/include/ -I${RIOTBASE}/drivers/include/
 
 include $(RIOTBASE)/Makefile.include
