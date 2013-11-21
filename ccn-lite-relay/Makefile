@@ -18,10 +18,6 @@ endif
 # this has to be the absolute path of the RIOT-base dir
 export RIOTBASE =$(CURDIR)/../../RIOT
 
-ifeq ($(BOARD),stm32f4discovery)
-	include Makefile.$(BOARD)
-endif
-
 ## Modules to include. 
 
 USEMODULE += uart0
