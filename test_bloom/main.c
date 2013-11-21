@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) 2013 Christian Mehlis <christian.mehlis@fu-berlin.de>
+ *
+ * This file subject to the terms and conditions of the GNU Lesser General
+ * Public License. See the file LICENSE in the top level directory for more
+ * details.
+ */
+
 #include <stdio.h>
 #include <string.h>
 
