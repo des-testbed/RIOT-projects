@@ -8,19 +8,19 @@
 #### 
 
 # name of your project
-export PROJECT=sixlowpan
+export PROJECT = sixlowpan
 
 # for easy switching of boards
 ifeq ($(strip $(BOARD)),)
-	export BOARD=msba2
+	export BOARD = native
 endif
 
 ifneq (,$(findstring msb-430,$(BOARD)))
-include $(CURDIR)/../Makefile.unsupported
+	include $(CURDIR)/../Makefile.unsupported
 else
 
 # this has to be the absolute path of the RIOT-base dir
-export RIOTBASE =$(CURDIR)/../RIOT
+export RIOTBASE = $(CURDIR)/../../RIOT
 
 ifeq ($(BOARD),stm32f4discovery)
 	include Makefile.$(BOARD)
@@ -44,7 +44,7 @@ else ifeq ($(BOARD),native)
 	USEMODULE += nativenet
 endif
 
-export INCLUDES=-I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTCPU)/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/ -I$(RIOTBASE)/drivers/cc110x_ng/include/ -I$(RIOTBASE)/sys/net/include/
+export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTCPU)/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/ -I$(RIOTBASE)/drivers/cc110x_ng/include/ -I$(RIOTBASE)/sys/net/include/
 
 include $(RIOTBASE)/Makefile.include
 endif

@@ -8,15 +8,15 @@
 #### 
 
 # name of your project
-export PROJECT =test_shell
+export PROJECT = test_shell
 
 # for easy switching of boards
 ifeq ($(strip $(BOARD)),)
-	export BOARD = msba2
+	export BOARD = native
 endif
 
 # this has to be the absolute path of the RIOT-base dir
-export RIOTBASE =$(CURDIR)/../../RIOT
+export RIOTBASE = $(CURDIR)/../../RIOT
 
 ## Modules to include. 
 

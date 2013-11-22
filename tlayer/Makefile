@@ -8,19 +8,19 @@
 ####
 
 # name of your project
-export PROJECT =tlayer
+export PROJECT = tlayer
 
 # for easy switching of boards
 ifeq ($(strip $(BOARD)),)
-export BOARD = msba2
+	export BOARD = native
 endif
 
 ifneq (,$(findstring msb-430,$(BOARD)))
-include $(CURDIR)/../Makefile.unsupported
+	include $(CURDIR)/../Makefile.unsupported
 else
 
 # this has to be the absolute path of the RIOT-base dir
-export RIOTBASE =$(CURDIR)/../../RIOT
+export RIOTBASE = $(CURDIR)/../../RIOT
 
 ## Modules to include. 
 
@@ -32,8 +32,9 @@ USEMODULE += shell_commands
 USEMODULE += config
 ifeq ($(BOARD),native)
 	USEMODULE += nativenet
-else ifeq($(BOARD),msba2)
-USEMODULE += cc110x_ng
+endif
+ifeq ($(BOARD),msba2)
+	USEMODULE += cc110x_ng
 endif
 USEMODULE += transceiver
 USEMODULE += net_help

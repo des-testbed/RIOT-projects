@@ -8,7 +8,7 @@
 ####
 
 # name of your project
-export PROJECT =test_cc110x_ng
+export PROJECT = test_cc110x_ng
 
 # for easy switching of boards
 ifeq ($(strip $(BOARD)),)
@@ -16,11 +16,11 @@ ifeq ($(strip $(BOARD)),)
 endif
 
 ifneq ($(BOARD),msba2)
-include $(CURDIR)/../Makefile.unsupported
+	include $(CURDIR)/../Makefile.unsupported
 else
 
 # this has to be the absolute path of the RIOT-base dir
-export RIOTBASE =$(CURDIR)/../../RIOT
+export RIOTBASE = $(CURDIR)/../../RIOT
 
 USEMODULE += config
 USEMODULE += posix
