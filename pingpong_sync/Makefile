@@ -8,7 +8,7 @@
 #### 
 
 # name of your project
-export PROJECT = pingpong
+export PROJECT = pingpong_sync
 
 # for easy switching of boards
 ifeq ($(strip $(BOARD)),)
