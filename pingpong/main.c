@@ -29,7 +29,7 @@ int main(void) {
     while(1) {
                 msg_send(&m, pid, true);
                 msg_receive(&m);
-                printf("Got msg with content %lu\n", m.content.value);
+                printf("Got msg with content %u\n", m.content.value);
     }
     return 0;
 }
