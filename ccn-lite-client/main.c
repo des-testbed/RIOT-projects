@@ -35,6 +35,7 @@
 
 #define RIOT_CCN_APPSERVER (1)
 #define RIOT_CCN_TESTS (0)
+#define CCNL_DEFAULT_MAX_CACHE_ENTRIES  0   // means: no content caching
 
 char relay_stack[KERNEL_CONF_STACKSIZE_PRINTF];
 
@@ -42,6 +43,8 @@ char relay_stack[KERNEL_CONF_STACKSIZE_PRINTF];
 char appserver_stack[KERNEL_CONF_STACKSIZE_PRINTF];
 #endif
 int relay_pid, appserver_pid;
+
+int shell_max_cache_entries;
 
 #define SHELL_MSG_BUFFER_SIZE (64)
 msg_t msg_buffer_shell[SHELL_MSG_BUFFER_SIZE];
@@ -138,16 +141,23 @@ static void riot_ccn_register_prefix(char *str)
 
 static void relay_thread(void)
 {
-    ccnl_riot_relay_start();
+    ccnl_riot_relay_start(shell_max_cache_entries);
 }
 
 static void riot_ccn_relay_start(char *str)
 {
-    (void) str; /* unused */
-
     if (relay_pid) {
         /* already running */
         return;
+    }
+
+    char *toc_str = strtok(str, " ");
+
+    toc_str = strtok(NULL, " ");
+    if (!toc_str) {
+        shell_max_cache_entries = CCNL_DEFAULT_MAX_CACHE_ENTRIES;
+    } else {
+        shell_max_cache_entries = atoi(toc_str);
     }
 
     relay_pid = thread_create(relay_stack, KERNEL_CONF_STACKSIZE_PRINTF, PRIORITY_MAIN - 2, CREATE_STACKTEST, relay_thread, "relay");
