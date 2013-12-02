@@ -1,5 +1,15 @@
 /*
- * Copyright (C) 2008, 2009, 2010  Kaspar Schleiser <kaspar@schleiser.de>
+ * Copyright (C) 2013 Freie Universität Berlin
+ *
+ * This file is subject to the terms and conditions of the GNU Lesser General
+ * Public License. See the file LICENSE in the top level directory for more
+ * details.
+ */
+
+/**
+ * @file        main.c
+ * @brief       Application for testing the crypto module
+ *
  * @author      Kaspar Schleiser <kaspar@schleiser.de>
  * @author      Hauke Petersen <hauke.petersen@fu-berlin.de>
  */
