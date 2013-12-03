@@ -16,7 +16,7 @@ ifeq ($(strip $(BOARD)),)
 endif
 
 # this has to be the absolute path of the RIOT-base dir
-export RIOTBASE =$(CURDIR)/../../RIOT
+export RIOTBASE = $(CURDIR)/../../RIOT
 
 # uncomment this to enable scheduler statistics for ps
 #CFLAGS += -DSCHEDSTATISTICS

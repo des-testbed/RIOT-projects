@@ -2,9 +2,12 @@
 export PROJECT = test_hwtimer_spin
 
 # for easy switching of boards
+ifeq ($(strip $(BOARD)),)
+	export BOARD = native
+endif
 
 # the absolute path of the RIOT-base dir
-export RIOTBASE =$(CURDIR)/../../RIOT
+export RIOTBASE = $(CURDIR)/../../RIOT
 
 # modules to include
 USEMODULE += auto_init

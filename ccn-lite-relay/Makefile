@@ -8,15 +8,15 @@
 #### 
 
 # name of your project
-export PROJECT=ccn-lite-relay
+export PROJECT = ccn-lite-relay
 
 # for easy switching of boards
 ifeq ($(strip $(BOARD)),)
-	export BOARD=native
+	export BOARD = native
 endif
 
 # this has to be the absolute path of the RIOT-base dir
-export RIOTBASE =$(CURDIR)/../../RIOT
+export RIOTBASE = $(CURDIR)/../../RIOT
 
 ## Modules to include. 
 
@@ -38,6 +38,6 @@ USEMODULE += crypto
 USEMODULE += bloom
 USEMODULE += hashes
 
-export INCLUDES=-I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTCPU)/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/ -I$(RIOTBASE)/drivers/cc110x_ng/include/ -I$(RIOTBASE)/sys/net/ccn_lite/include/
+export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTCPU)/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/ -I$(RIOTBASE)/drivers/cc110x_ng/include/ -I$(RIOTBASE)/sys/net/ccn_lite/include/
 
 include $(RIOTBASE)/Makefile.include

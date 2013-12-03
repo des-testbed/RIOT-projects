@@ -8,7 +8,7 @@ export PROJECT = test_nativenet
 export BOARD = native
 
 # this has to be the absolute path of the RIOT-base dir
-export RIOTBASE =$(CURDIR)/../RIOT
+export RIOTBASE = $(CURDIR)/../../RIOT
 
 ifeq (,$(findstring native,$(BOARD)))
 include $(CURDIR)/../Makefile.unsupported

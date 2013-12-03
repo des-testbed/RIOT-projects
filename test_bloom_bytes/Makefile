@@ -8,18 +8,18 @@
 #### 
 
 # name of your project
-export PROJECT =test_bloom
+export PROJECT = test_bloom
 
 # for easy switching of boards
 ifeq ($(strip $(BOARD)),)
-	export BOARD = msba2
+	export BOARD = native
 endif
 
 ifneq (,$(findstring msb-430,$(BOARD)))
 include $(CURDIR)/../Makefile.unsupported
 else
 # this has to be the absolute path of the RIOT-base dir
-export RIOTBASE =$(CURDIR)/../../RIOT
+export RIOTBASE = $(CURDIR)/../../RIOT
 
 ifeq ($(BOARD),stm32f4discovery)
 	include Makefile.$(BOARD)

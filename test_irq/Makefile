@@ -5,13 +5,15 @@ valgrind: CFLAGS += -DHAVE_VALGRIND_VALGRIND_H
 export PROJECT = test_irq
 #
 # for easy switching of boards
-export BOARD = native
+ifeq ($(strip $(BOARD)),)
+	export BOARD = native
+endif
 
 # this has to be the absolute path of the RIOT-base dir
-export RIOTBASE =$(CURDIR)/../../RIOT
+export RIOTBASE = $(CURDIR)/../../RIOT
 
 ifeq (,$(findstring native,$(BOARD)))
-include $(CURDIR)/../Makefile.unsupported
+	include $(CURDIR)/../Makefile.unsupported
 else
 
 ## Modules to include. 
