@@ -39,6 +39,7 @@ USEMODULE += posix
 USEMODULE += ps
 USEMODULE += auto_init
 USEMODULE += hwtimer
+USEMODULE += ltc4150
 
 USEMODULE += transceiver
 ifeq ($(BOARD),msba2)
