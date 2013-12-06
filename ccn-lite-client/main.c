@@ -277,12 +277,23 @@ static void riot_ccn_populate(char *str)
     msg_send(&m, relay_pid, 1);
 }
 
+static void riot_ccn_stat(char *str)
+{
+    (void) str; /* unused */
+
+    msg_t m;
+    m.content.value = 0;
+    m.type = CCNL_RIOT_PRINT_STAT;
+    msg_send(&m, relay_pid, 1);
+}
+
 static const shell_command_t sc[] = {
     { "ccn", "starts ccn relay", riot_ccn_relay_start },
     { "haltccn", "stops ccn relay", riot_ccn_relay_stop },
     { "interest", "express an interest", riot_ccn_express_interest },
     { "populate", "populate the cache of the relay with data", riot_ccn_populate },
     { "prefix", "registers a prefix to a face", riot_ccn_register_prefix },
+    { "stat", "prints out forwarding statistics", riot_ccn_stat },
 #if RIOT_CCN_APPSERVER
     { "appserver", "starts an application server to reply to interests", riot_ccn_appserver },
 #endif
