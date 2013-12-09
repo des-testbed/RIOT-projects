@@ -26,6 +26,16 @@ void print_ipv6_addr(const ipv6_addr_t *ipv6_addr)
     printf("%s\n", ipv6_addr_to_str(addr_str, ipv6_addr));
 }
 
+void printUsage()
+{
+    printf("Usage: init {h | r | a | e} radio_address\n");
+    printf("\th\tinitialize as host\n");
+    printf("\tr\tinitialize as router\n");
+    printf("\ta\tinitialize as ad-hoc router\n");
+    printf("\tb\tinitialize as border router\n\n");
+    printf("\tradio_address must be an 8 bit integer\n");
+}
+
 void init(char *str)
 {
     char *command;
@@ -34,16 +44,19 @@ void init(char *str)
     size_t str_len = strlen(str);
 
     command = strtok(str, " ");
-    r_addr = (uint16_t) strtol(strtok(str, " "), NULL, 10);
 
-    if (str_len < 5) {
-        printf("Usage: init {h | r | a | e} radio_address\n");
-        printf("\th\tinitialize as host\n");
-        printf("\tr\tinitialize as router\n");
-        printf("\ta\tinitialize as ad-hoc router\n");
-        printf("\tb\tinitialize as border router\n\n");
-        printf("\tradio_address must be an 8 bit integer\n");
+    if (str_len < 6) {
+        printUsage();
+        return;
     }
+
+    command = strtok(NULL, " ");
+    r_addr = (uint16_t) strtol(strtok(NULL, " "), NULL, 10);
+    
+    if ( r_addr == 0 ) {
+        printUsage();
+        return;
+    }    
 
     ipv6_addr_init(&std_addr, 0xABCD, 0, 0, 0, 0x1034, 0x00FF, 0xFE00, r_addr);
 
@@ -111,6 +124,7 @@ void init(char *str)
 
         default:
             printf("ERROR: Unknown command '%c'\n", command[0]);
+            printUsage();
             break;
     }
 }
