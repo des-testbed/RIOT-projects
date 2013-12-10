@@ -24,7 +24,7 @@
 #include "rtc.h"
 
 // ccn
-#include "ccnl-riot.h"
+#include "ccn_lite/ccnl-riot.h"
 
 int relay_pid;
 

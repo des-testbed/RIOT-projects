@@ -30,8 +30,8 @@
 #define ENABLE_DEBUG (1)
 #include "debug.h"
 
-#include "ccnl-riot.h"
-#include "util/ccnl-riot-client.h"
+#include "ccn_lite/ccnl-riot.h"
+#include "ccn_lite/util/ccnl-riot-client.h"
 
 #define RIOT_CCN_APPSERVER (1)
 #define RIOT_CCN_TESTS (0)
