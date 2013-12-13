@@ -42,17 +42,14 @@ void init(char *str)
     uint16_t r_addr;
     ipv6_addr_t std_addr;
     size_t str_len = strlen(str);
-
     command = strtok(str, " ");
-
-    if (str_len < 6) {
+    if (str_len < 6 && strcmp(command, "init") != 0) {
         printUsage();
         return;
     }
 
     command = strtok(NULL, " ");
     r_addr = (uint16_t) strtol(strtok(NULL, " "), NULL, 10);
-    
     if ( r_addr == 0 ) {
         printUsage();
         return;
