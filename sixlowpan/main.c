@@ -33,8 +33,9 @@ void init(char *str)
     ipv6_addr_t std_addr;
     size_t str_len = strlen(str);
 
-    command = strtok(str, " ");
-    r_addr = (uint16_t) strtol(strtok(str, " "), NULL, 10);
+    strtok(str, " ");                   // eliminate "init"
+    command = strtok(NULL, " ");
+    r_addr = (uint16_t) strtol(strtok(NULL, " "), NULL, 10);
 
     if (str_len < 5) {
         printf("Usage: init {h | r | a | e} radio_address\n");
