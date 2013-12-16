@@ -20,6 +20,12 @@
 #include "ipv6.h"
 #include "sixlowpan.h"
 
+#ifdef MODULE_NATIVENET
+#define TRANSCEIVER_TYPE TRANSCEIVER_NATIVE
+#else
+#define TRANSCEIVER_TYPE TRANSCEIVER_CC1100
+#endif
+
 void print_ipv6_addr(const ipv6_addr_t *ipv6_addr)
 {
     char addr_str[IPV6_MAX_ADDR_STR_LEN];
@@ -66,7 +72,7 @@ void init(char *str)
                 return;
             }
 
-            sixlowpan_lowpan_init(TRANSCEIVER_CC1100, r_addr, 0);
+            sixlowpan_lowpan_init(TRANSCEIVER_TYPE, r_addr, 0);
             break;
 
         case 'r':
@@ -77,7 +83,7 @@ void init(char *str)
                 return;
             }
 
-            sixlowpan_lowpan_init(TRANSCEIVER_CC1100, r_addr, 0);
+            sixlowpan_lowpan_init(TRANSCEIVER_TYPE, r_addr, 0);
             ipv6_init_iface_as_router();
             break;
 
@@ -89,7 +95,7 @@ void init(char *str)
                 return;
             }
 
-            sixlowpan_lowpan_adhoc_init(TRANSCEIVER_CC1100, &std_addr, r_addr);
+            sixlowpan_lowpan_adhoc_init(TRANSCEIVER_TYPE, &std_addr, r_addr);
             break;
 
         case 'b':
@@ -100,7 +106,7 @@ void init(char *str)
                 return;
             }
 
-            int res = sixlowpan_lowpan_border_init(TRANSCEIVER_CC1100, &std_addr);
+            int res = sixlowpan_lowpan_border_init(TRANSCEIVER_TYPE, &std_addr);
 
             switch (res) {
                 case (SIXLOWERROR_SUCCESS):
