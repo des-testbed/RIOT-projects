@@ -12,6 +12,8 @@ struct timer_msg {
     char* msg;
 };
 
+timex_t now;
+
 struct timer_msg msg_a = { .timer = {0}, .interval = { .seconds = 2, .microseconds = 0}, .msg = "Hello World" };
 struct timer_msg msg_b = { .timer = {0}, .interval = { .seconds = 5, .microseconds = 0}, .msg = "This is a Test" };
 
@@ -29,7 +31,10 @@ void timer_thread(void)
         msg_t m;
         msg_receive(&m);
         struct timer_msg* tmsg = (struct timer_msg*) m.content.ptr;
-        printf("every %u.%us: %s\n",
+        vtimer_now(&now);
+        printf("now=%" PRIu32 ":%" PRIu32 " -> every %u.%us: %s\n",
+                now.seconds,
+                now.microseconds,
                 tmsg->interval.seconds,
                 tmsg->interval.microseconds,
                 tmsg->msg);
