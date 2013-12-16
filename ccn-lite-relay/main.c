@@ -52,7 +52,7 @@ void set_address_handler(uint16_t a)
     printf("got address: %"PRIu16"\n", a);
 }
 
-void populate_cache()
+void populate_cache(void)
 {
     msg_t m;
     m.content.value = 0;
