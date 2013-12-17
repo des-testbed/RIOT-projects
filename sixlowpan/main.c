@@ -38,22 +38,22 @@ void printUsage()
 
 void init(char *str)
 {
-    char *command;
     uint16_t r_addr;
     ipv6_addr_t std_addr;
     size_t str_len = strlen(str);
-    command = strtok(str, " ");
-    if (str_len < 6 && strcmp(command, "init") != 0) {
+    char *command = strtok(str, " ");
+
+    if ((command = strtok(NULL, " ")) == NULL) {
         printUsage();
         return;
     }
 
-    command = strtok(NULL, " ");
-    r_addr = (uint16_t) strtol(strtok(NULL, " "), NULL, 10);
-    if ( r_addr == 0 ) {
+    char *p;
+    if (((p = strtok(NULL, " ")) == NULL)
+            || ((r_addr = (uint16_t) strtol(p, NULL, 10)) == 0)) {;
         printUsage();
         return;
-    }    
+    }
 
     ipv6_addr_init(&std_addr, 0xABCD, 0, 0, 0, 0x1034, 0x00FF, 0xFE00, r_addr);
 
