@@ -26,16 +26,19 @@
 #include "transceiver.h"
 #include "rtc.h"
 #include "ps.h"
+#include "ltc4150.h"
 
 #define ENABLE_DEBUG (1)
 #include "debug.h"
 
-#include "ccnl-riot.h"
-#include "util/ccnl-riot-client.h"
+#include "ccn_lite/ccnl-riot.h"
+#include "ccn_lite/util/ccnl-riot-client.h"
 
 #define RIOT_CCN_APPSERVER (1)
 #define RIOT_CCN_TESTS (0)
 #define CCNL_DEFAULT_MAX_CACHE_ENTRIES  0   // means: no content caching
+#define CCNL_DEFAULT_THRESHOLD_PREFIX   1
+#define CCNL_DEFAULT_THRESHOLD_AGGREGATE 2
 
 char relay_stack[KERNEL_CONF_STACKSIZE_PRINTF];
 
@@ -44,7 +47,7 @@ char appserver_stack[KERNEL_CONF_STACKSIZE_PRINTF];
 #endif
 int relay_pid, appserver_pid;
 
-int shell_max_cache_entries;
+int shell_max_cache_entries, shell_threshold_prefix, shell_threshold_aggregate;
 
 #define SHELL_MSG_BUFFER_SIZE (64)
 msg_t msg_buffer_shell[SHELL_MSG_BUFFER_SIZE];
@@ -89,7 +92,10 @@ static void riot_ccn_express_interest(char *str)
 
     DEBUG("in='%s'\n", small_buf);
 
+    ltc4150_start();
     int content_len = ccnl_riot_client_get(relay_pid, small_buf, (char *) big_buf); // small_buf=name to request
+    ltc4150_stop();
+    printf("mAh=%f\n", ltc4150_get_total_mAh());
 
     if (content_len == 0) {
         puts("riot_get returned 0 bytes...aborting!");
@@ -141,7 +147,7 @@ static void riot_ccn_register_prefix(char *str)
 
 static void relay_thread(void)
 {
-    ccnl_riot_relay_start(shell_max_cache_entries);
+    ccnl_riot_relay_start(shell_max_cache_entries, shell_threshold_prefix, shell_threshold_aggregate);
 }
 
 static void riot_ccn_relay_start(char *str)
@@ -158,6 +164,20 @@ static void riot_ccn_relay_start(char *str)
         shell_max_cache_entries = CCNL_DEFAULT_MAX_CACHE_ENTRIES;
     } else {
         shell_max_cache_entries = atoi(toc_str);
+    }
+
+    toc_str = strtok(NULL, " ");
+    if (!toc_str) {
+        shell_threshold_prefix = CCNL_DEFAULT_THRESHOLD_PREFIX;
+    } else {
+        shell_threshold_prefix = atoi(toc_str);
+    }
+
+    toc_str = strtok(NULL, " ");
+    if (!toc_str) {
+        shell_threshold_aggregate = CCNL_DEFAULT_THRESHOLD_AGGREGATE;
+    } else {
+        shell_threshold_aggregate = atoi(toc_str);
     }
 
     relay_pid = thread_create(relay_stack, KERNEL_CONF_STACKSIZE_PRINTF, PRIORITY_MAIN - 2, CREATE_STACKTEST, relay_thread, "relay");
@@ -261,12 +281,40 @@ static void riot_ccn_populate(char *str)
     msg_send(&m, relay_pid, 1);
 }
 
+static void riot_ccn_stat(char *str)
+{
+    (void) str; /* unused */
+
+    msg_t m;
+    m.content.value = 0;
+    m.type = CCNL_RIOT_PRINT_STAT;
+    msg_send(&m, relay_pid, 1);
+}
+
+static void riot_ccn_columb(char *str)
+{
+    (void) str; /* unused */
+
+    ltc4150_start();
+}
+
+static void riot_ccn_columb_stop(char *str)
+{
+    (void) str; /* unused */
+
+    ltc4150_stop();
+    printf("mAh=%lf\n", ltc4150_get_total_mAh());
+}
+
 static const shell_command_t sc[] = {
     { "ccn", "starts ccn relay", riot_ccn_relay_start },
     { "haltccn", "stops ccn relay", riot_ccn_relay_stop },
     { "interest", "express an interest", riot_ccn_express_interest },
     { "populate", "populate the cache of the relay with data", riot_ccn_populate },
     { "prefix", "registers a prefix to a face", riot_ccn_register_prefix },
+    { "stat", "prints out forwarding statistics", riot_ccn_stat },
+    { "columb", "starts the columb counter", riot_ccn_columb },
+    { "columbstop", "stops the columb counter", riot_ccn_columb_stop },
 #if RIOT_CCN_APPSERVER
     { "appserver", "starts an application server to reply to interests", riot_ccn_appserver },
 #endif

@@ -24,13 +24,15 @@
 #include "rtc.h"
 
 // ccn
-#include "ccnl-riot.h"
+#include "ccn_lite/ccnl-riot.h"
 
 int relay_pid;
 
 char t2_stack[KERNEL_CONF_STACKSIZE_PRINTF];
 
-#define CCNL_DEFAULT_MAX_CACHE_ENTRIES  0   // means: no content caching
+#define CCNL_DEFAULT_MAX_CACHE_ENTRIES  1
+#define CCNL_DEFAULT_THRESHOLD_PREFIX   1
+#define CCNL_DEFAULT_THRESHOLD_AGGREGATE 2
 
 void set_address_handler(uint16_t a)
 {
@@ -50,7 +52,7 @@ void set_address_handler(uint16_t a)
     printf("got address: %"PRIu16"\n", a);
 }
 
-void populate_cache()
+void populate_cache(void)
 {
     msg_t m;
     m.content.value = 0;
@@ -73,7 +75,9 @@ int main(void)
     thread_create(t2_stack, KERNEL_CONF_STACKSIZE_PRINTF, PRIORITY_MAIN + 1, CREATE_STACKTEST, second_thread, "helper thread");
 
     printf("starting ccn-lite relay...\n");
-    ccnl_riot_relay_start(CCNL_DEFAULT_MAX_CACHE_ENTRIES);
+    ccnl_riot_relay_start(CCNL_DEFAULT_MAX_CACHE_ENTRIES,
+                          CCNL_DEFAULT_THRESHOLD_PREFIX,
+                          CCNL_DEFAULT_THRESHOLD_AGGREGATE);
 
     return 0;
 }
