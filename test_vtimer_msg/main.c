@@ -4,7 +4,7 @@
 #include "thread.h"
 #include "msg.h"
 
-char timer_stack[KERNEL_CONF_STACKSIZE_DEFAULT];
+char timer_stack[KERNEL_CONF_STACKSIZE_PRINTF];
 
 struct timer_msg {
     vtimer_t timer;
