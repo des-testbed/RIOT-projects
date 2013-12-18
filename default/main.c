@@ -66,7 +66,7 @@ void radio(void) {
     }
 }
 
-void init_transceiver()
+void init_transceiver(void)
 {
     int radio_pid = thread_create(
             radio_stack_buffer,
