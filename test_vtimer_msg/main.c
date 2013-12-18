@@ -1,10 +1,12 @@
 #include <stdio.h>
+#include <time.h>
 
 #include "vtimer.h"
 #include "thread.h"
 #include "msg.h"
 
 char timer_stack[KERNEL_CONF_STACKSIZE_DEFAULT];
+char timer_stack_local[KERNEL_CONF_STACKSIZE_DEFAULT];
 
 struct timer_msg {
     vtimer_t timer;
@@ -47,6 +49,26 @@ void timer_thread(void)
     }
 }
 
+void timer_thread_local(void)
+{
+    printf("This is thread %d\n", thread_getpid());
+
+    /* we need a queue if the second message arrives while the first is still processed */
+    /* without a queue, the message would get lost */
+    /* because of the way this timer works, there can be max 1 queued message */
+    msg_t msgq[1];
+    msg_init_queue(msgq, sizeof msgq);
+
+    while (1) {
+        msg_t m;
+        msg_receive(&m);
+
+        struct tm t;
+        vtimer_get_localtime(&t);
+        printf("sec=%d min=%d hour=%d\n", t.tm_sec, t.tm_min, t.tm_hour);
+    }
+}
+
 int main(void) {
     msg_t m;
     int pid = thread_create(
@@ -64,4 +86,18 @@ int main(void) {
     puts("sending 2nd msg");
     m.content.ptr = (char*) &msg_b;
     msg_send(&m, pid, false);
+
+    int pid2 = thread_create(
+            timer_stack_local,
+            sizeof timer_stack_local,
+            PRIORITY_MAIN-1,
+            CREATE_STACKTEST,
+            timer_thread_local,
+            "timer local");
+
+    timex_t sleep = timex_set(1, 0);
+    while (1) {
+        vtimer_sleep(sleep);
+        msg_send(&m, pid2, 0);
+    }
 }
