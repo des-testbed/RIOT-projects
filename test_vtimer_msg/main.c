@@ -32,7 +32,7 @@ void timer_thread(void)
         msg_receive(&m);
         struct timer_msg* tmsg = (struct timer_msg*) m.content.ptr;
         vtimer_now(&now);
-        printf("now=%" PRIu32 ":%" PRIu32 " -> every %u.%us: %s\n",
+        printf("now=%" PRIu32 ":%" PRIu32 " -> every %" PRIu32 ".%" PRIu32 "s: %s\n",
                 now.seconds,
                 now.microseconds,
                 tmsg->interval.seconds,
