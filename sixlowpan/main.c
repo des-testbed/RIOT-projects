@@ -178,7 +178,7 @@ int main(void)
     posix_open(uart0_handler_pid, 0);
 
     shell_t shell;
-    shell_init(&shell, shell_commands, uart0_readc, uart0_putc);
+    shell_init(&shell, shell_commands, UART0_BUFSIZE, uart0_readc, uart0_putc);
 
     shell_run(&shell);
 

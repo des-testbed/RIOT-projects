@@ -60,7 +60,7 @@ const shell_command_t sc[] = {
     {NULL, NULL, NULL}};
 
 void shell_runner(void) {
-    shell_init(&shell, sc, uart0_readc, uart0_putc);
+    shell_init(&shell, sc, UART0_BUFSIZE, uart0_readc, uart0_putc);
     posix_open(uart0_handler_pid, 0);
     shell_run(&shell);
 }
