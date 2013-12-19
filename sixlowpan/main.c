@@ -56,7 +56,7 @@ void init(char *str)
 
     char *p;
     if (((p = strtok(NULL, " ")) == NULL)
-            || ((r_addr = (uint16_t) strtol(p, NULL, 10)) == 0)) {;
+            || ((r_addr = (uint16_t) strtol(p, NULL, 10)) == 0)) {
         printUsage();
         return;
     }
