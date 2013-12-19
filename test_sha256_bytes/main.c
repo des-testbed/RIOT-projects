@@ -11,7 +11,7 @@
 #include <string.h>
 
 #include "hwtimer.h"
-#include "sha256.h"
+#include "crypto/sha256.h"
 
 unsigned char hash[SHA256_DIGEST_LENGTH];
 #define myseed 0x83d385c0 /* random number */
@@ -35,7 +35,7 @@ int main(void)
     unsigned long t1 = hwtimer_now();
     for (int i = 0; i < COUNT; i++) {
         buf_fill((uint32_t *) &buf, (BUF_SIZE / sizeof(uint32_t)));
-        SHA256((uint32_t *) &buf, (BUF_SIZE / sizeof(uint32_t)), &hash);
+        sha256((uint32_t *) &buf, (BUF_SIZE / sizeof(uint32_t)), &hash);
 #if 0
         for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
             printf("%02x", hash[i]);
