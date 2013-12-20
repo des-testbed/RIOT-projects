@@ -49,7 +49,7 @@ else ifeq ($(BOARD),native)
 endif
 
 USEMODULE += rtc
-USEMODULE += crypto
+USEMODULE += crypto_sha256
 USEMODULE += ccn_lite
 USEMODULE += ccn_lite_client
 #USEMODULE += bloom
