@@ -39,6 +39,7 @@ USEMODULE += posix
 USEMODULE += ps
 USEMODULE += auto_init
 USEMODULE += hwtimer
+USEMODULE += ltc4150
 
 USEMODULE += transceiver
 ifeq ($(BOARD),msba2)
@@ -48,7 +49,7 @@ else ifeq ($(BOARD),native)
 endif
 
 USEMODULE += rtc
-USEMODULE += crypto
+USEMODULE += crypto_sha256
 USEMODULE += ccn_lite
 USEMODULE += ccn_lite_client
 #USEMODULE += bloom
