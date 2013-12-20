@@ -7,7 +7,9 @@ the system shell commands:
    directory). 
 2. The shell must be initialized as follows:
         2.1 shell_t sys_shell;
-        2.2 shell_init(&shell, shell_commands, shell_readc, shell_putchar); 
-            or shell_init(&sys_shell, NULL, shell_readc, shell_putchar); 
+        2.2 shell_init(&shell, shell_commands, shell_bufsize shell_readc, 
+                       shell_putchar); 
+            or shell_init(&sys_shell, NULL, shell_bufsize,
+                          shell_readc, shell_putchar); 
             /* to initialize without the built-in shell commands */
         2.3 shell_run(&sys_shell);

@@ -314,7 +314,7 @@ void riot_ccn_runner(void)
     puts("posix open");
     posix_open(uart0_handler_pid, 0);
     puts("shell init");
-    shell_init(&shell, sc, uart0_readc, uart0_putc);
+    shell_init(&shell, sc, UART0_BUFSIZE, uart0_readc, uart0_putc);
     puts("shell run");
     shell_run(&shell);
 }
