@@ -192,6 +192,9 @@ static void riot_ccn_relay_stop(char *str)
     m.content.value = 0;
     m.type = CCNL_RIOT_HALT;
     msg_send(&m, relay_pid, 1);
+
+    /* mark relay as not running */
+    relay_pid = 0;
 }
 
 #if RIOT_CCN_TESTS
