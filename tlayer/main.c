@@ -73,7 +73,7 @@ int main(void)
     init_tl(NULL);
 
     shell_t shell;
-    shell_init(&shell, shell_commands, SHELL_BUFSIZE, uart0_readc, uart0_putc);
+    shell_init(&shell, shell_commands, UART0_BUFSIZE, uart0_readc, uart0_putc);
 
     shell_run(&shell);
 
