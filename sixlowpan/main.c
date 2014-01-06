@@ -20,6 +20,8 @@
 #include "ipv6.h"
 #include "sixlowpan.h"
 
+#define TRANSCEIVER TRANSCEIVER_NATIVE
+
 void print_ipv6_addr(const ipv6_addr_t *ipv6_addr)
 {
     char addr_str[IPV6_MAX_ADDR_STR_LEN];
@@ -33,8 +35,10 @@ void init(char *str)
     ipv6_addr_t std_addr;
     size_t str_len = strlen(str);
 
-    command = strtok(str, " ");
-    r_addr = (uint16_t) strtol(strtok(str, " "), NULL, 10);
+    strtok(str, " ");
+    command = strtok(NULL, " ");
+
+    r_addr = (uint16_t) strtol(strtok(NULL, " "), NULL, 10);
 
     if (str_len < 5) {
         printf("Usage: init {h | r | a | e} radio_address\n");
@@ -47,7 +51,7 @@ void init(char *str)
 
     ipv6_addr_init(&std_addr, 0xABCD, 0, 0, 0, 0x1034, 0x00FF, 0xFE00, r_addr);
 
-    switch (command[0]) {
+    switch (*command) {
         case 'h':
             printf("INFO: Initialize as host on radio address %hu\n", r_addr);
 
@@ -56,7 +60,7 @@ void init(char *str)
                 return;
             }
 
-            sixlowpan_lowpan_init(TRANSCEIVER_CC1100, r_addr, 0);
+            sixlowpan_lowpan_init(TRANSCEIVER, r_addr, 0);
             break;
 
         case 'r':
@@ -67,7 +71,7 @@ void init(char *str)
                 return;
             }
 
-            sixlowpan_lowpan_init(TRANSCEIVER_CC1100, r_addr, 0);
+            sixlowpan_lowpan_init(TRANSCEIVER, r_addr, 0);
             ipv6_init_iface_as_router();
             break;
 
@@ -79,7 +83,7 @@ void init(char *str)
                 return;
             }
 
-            sixlowpan_lowpan_adhoc_init(TRANSCEIVER_CC1100, &std_addr, r_addr);
+            sixlowpan_lowpan_adhoc_init(TRANSCEIVER, &std_addr, r_addr);
             break;
 
         case 'b':
@@ -90,7 +94,7 @@ void init(char *str)
                 return;
             }
 
-            int res = sixlowpan_lowpan_border_init(TRANSCEIVER_CC1100, &std_addr);
+            int res = sixlowpan_lowpan_border_init(TRANSCEIVER, &std_addr);
 
             switch (res) {
                 case (SIXLOWERROR_SUCCESS):
@@ -110,7 +114,7 @@ void init(char *str)
             break;
 
         default:
-            printf("ERROR: Unknown command '%c'\n", command[0]);
+            printf("ERROR: Unknown command '%c'\n", command);
             break;
     }
 }
