@@ -8,7 +8,7 @@ export PROJECT = test-cppMix
 export BOARD = native
 
 # this has to be the absolute path of the RIOT-base dir
-export RIOTBASE =$(CURDIR)/../RIOT
+export RIOTBASE =$(CURDIR)/../../RIOT
 
 ifeq (,$(findstring native,$(BOARD)))
 include $(CURDIR)/../Makefile.unsupported
@@ -29,13 +29,11 @@ USEMODULE += auto_init
 USEMODULE += config
 USEMODULE += hwtimer
 USEMODULE += ltc4150 # depends on hwtimer
-USEMODULE += nativenet
 USEMODULE += posix
 USEMODULE += ps
 USEMODULE += rtc
 USEMODULE += shell
 USEMODULE += shell_commands
-USEMODULE += transceiver
 USEMODULE += uart0
 USEMODULE += vtimer
 
