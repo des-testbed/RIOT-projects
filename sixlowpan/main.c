@@ -20,29 +20,45 @@
 #include "ipv6.h"
 #include "sixlowpan.h"
 
+#ifdef MODULE_NATIVENET
+#define TRANSCEIVER_TYPE TRANSCEIVER_NATIVE
+#else
+#define TRANSCEIVER_TYPE TRANSCEIVER_CC1100
+#endif
+
 void print_ipv6_addr(const ipv6_addr_t *ipv6_addr)
 {
     char addr_str[IPV6_MAX_ADDR_STR_LEN];
     printf("%s\n", ipv6_addr_to_str(addr_str, ipv6_addr));
 }
 
+void printUsage()
+{
+    printf("Usage: init {h | r | a | e} radio_address\n");
+    printf("\th\tinitialize as host\n");
+    printf("\tr\tinitialize as router\n");
+    printf("\ta\tinitialize as ad-hoc router\n");
+    printf("\tb\tinitialize as border router\n\n");
+    printf("\tradio_address must be an 8 bit integer\n");
+}
+
 void init(char *str)
 {
-    char *command;
     uint16_t r_addr;
     ipv6_addr_t std_addr;
     size_t str_len = strlen(str);
+    char *command = strtok(str, " ");
 
-    command = strtok(str, " ");
-    r_addr = (uint16_t) strtol(strtok(str, " "), NULL, 10);
+    if ((command = strtok(NULL, " ")) == NULL) {
+        printUsage();
+        return;
+    }
 
-    if (str_len < 5) {
-        printf("Usage: init {h | r | a | e} radio_address\n");
-        printf("\th\tinitialize as host\n");
-        printf("\tr\tinitialize as router\n");
-        printf("\ta\tinitialize as ad-hoc router\n");
-        printf("\tb\tinitialize as border router\n\n");
-        printf("\tradio_address must be an 8 bit integer\n");
+    char *p;
+    if (((p = strtok(NULL, " ")) == NULL)
+            || ((r_addr = (uint16_t) strtol(p, NULL, 10)) == 0)) {
+        printUsage();
+        return;
     }
 
     ipv6_addr_init(&std_addr, 0xABCD, 0, 0, 0, 0x1034, 0x00FF, 0xFE00, r_addr);
@@ -56,7 +72,7 @@ void init(char *str)
                 return;
             }
 
-            sixlowpan_lowpan_init(TRANSCEIVER_CC1100, r_addr, 0);
+            sixlowpan_lowpan_init(TRANSCEIVER_TYPE, r_addr, 0);
             break;
 
         case 'r':
@@ -67,7 +83,7 @@ void init(char *str)
                 return;
             }
 
-            sixlowpan_lowpan_init(TRANSCEIVER_CC1100, r_addr, 0);
+            sixlowpan_lowpan_init(TRANSCEIVER_TYPE, r_addr, 0);
             ipv6_init_iface_as_router();
             break;
 
@@ -79,7 +95,7 @@ void init(char *str)
                 return;
             }
 
-            sixlowpan_lowpan_adhoc_init(TRANSCEIVER_CC1100, &std_addr, r_addr);
+            sixlowpan_lowpan_adhoc_init(TRANSCEIVER_TYPE, &std_addr, r_addr);
             break;
 
         case 'b':
@@ -90,7 +106,7 @@ void init(char *str)
                 return;
             }
 
-            int res = sixlowpan_lowpan_border_init(TRANSCEIVER_CC1100, &std_addr);
+            int res = sixlowpan_lowpan_border_init(TRANSCEIVER_TYPE, &std_addr);
 
             switch (res) {
                 case (SIXLOWERROR_SUCCESS):
@@ -111,6 +127,7 @@ void init(char *str)
 
         default:
             printf("ERROR: Unknown command '%c'\n", command[0]);
+            printUsage();
             break;
     }
 }
