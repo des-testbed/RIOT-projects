@@ -21,10 +21,17 @@ int main(void)
 #define MSGLEN 12 // == strlen("callback %2i")
     char msg[MSGLEN * ARCH_MAXTIMERS]; // == [callback  1\0callback  2\0...]
     unsigned long delay = BASE_DELAY + (ARCH_MAXTIMERS * DELTA_DELAY);
+
+    /* make the first timer first to fire so timers do not run out linearly */
+    char *msgn = msg;
+    snprintf(msgn, MSGLEN, "callback %2x", 1);
+    hwtimer_set(BASE_DELAY, callback, (void*) msgn);
+    printf("set %s\n", msgn);
+
     /* set up to ARCH_MAXTIMERS-1 because hwtimer_wait below also
      * needs a timer */
-    for (int i = 0; i < (ARCH_MAXTIMERS - 1); i++) {
-        char *msgn = msg + (i*MSGLEN);
+    for (int i = 1; i < (ARCH_MAXTIMERS - 1); i++) {
+        msgn = msg + (i*MSGLEN);
         delay -= DELTA_DELAY;
         snprintf(msgn, MSGLEN, "callback %2x", i+1);
         hwtimer_set(delay, callback, (void*) msgn);

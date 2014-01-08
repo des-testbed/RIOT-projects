@@ -25,17 +25,17 @@ expect {
 }
 
 expect { 
+    "callback  1" {} 
+    timeout { exit 1 }
+}
+
+expect { 
     "callback  3" {} 
     timeout { exit 1 }
 }
 
 expect { 
     "callback  2" {} 
-    timeout { exit 1 }
-}
-
-expect { 
-    "callback  1" {} 
     timeout { exit 1 }
 }
 
