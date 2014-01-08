@@ -29,10 +29,13 @@ export RIOTBASE = $(CURDIR)/../../RIOT
 #CFLAGS += -DHAVE_VALGRIND_VALGRIND_H
 #CFLAGS += -DHAVE_VALGRIND_H
 
-# uncomment this to enable code in RIOT that does safety checking
+# Uncomment this to enable code in RIOT that does safety checking
 # which is not needed in a production environment but helps in the
 # development process:
 #CFLAGS += -DDEVELHELP
+
+# Uncomment this to hide compiler invocation lines:
+#QUIET = 1
 
 USEMODULE += posix
 USEMODULE += uart0
