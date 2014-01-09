@@ -45,7 +45,7 @@ USEMODULE += uart0
 USEMODULE += posix
 USEMODULE += ltc4150
 
-export INCLUDES += -I$(RIOTBASE)/sys/include -I$(RIOTBASE)/drivers/include -I$(RIOTBASE)/drivers/cc110x_ng/include -I$(RIOTBASE)/sys/net/include -I$(RIOTBASE)/sys/net/destiny
+export INCLUDES += -I$(RIOTBASE)/sys/include -I$(RIOTBASE)/drivers/include -I$(RIOTBASE)/drivers/cc110x_ng/include -I$(RIOTBASE)/sys/net/include -I$(RIOTBASE)/sys/net/transport_layer/destiny
 
 include $(RIOTBASE)/Makefile.include
 endif
