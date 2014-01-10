@@ -2,8 +2,7 @@
 
 set timeout 5
 
-spawn board/msba2/tools/bin/pseudoterm $env(PORT) 
-exec jam reset 
+spawn pseudoterm $env(PORT)
 
 expect { 
     "OK" {} 
@@ -11,17 +10,37 @@ expect {
 }
 
 expect { 
-    "callback1" {} 
+    "set callback  1" {} 
     timeout { exit 1 }
 }
 
 expect { 
-    "callback3" {} 
+    "set callback  2" {} 
     timeout { exit 1 }
 }
 
 expect { 
-    "callback2" {} 
+    "set callback  3" {} 
+    timeout { exit 1 }
+}
+
+expect { 
+    "callback  1" {} 
+    timeout { exit 1 }
+}
+
+expect { 
+    "callback  3" {} 
+    timeout { exit 1 }
+}
+
+expect { 
+    "callback  2" {} 
+    timeout { exit 1 }
+}
+
+expect { 
+    "hwtimer set." {} 
     timeout { exit 1 }
 }
 
