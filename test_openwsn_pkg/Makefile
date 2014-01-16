@@ -42,9 +42,14 @@ USEMODULE += openwsn
 
 export INCLUDES += -I${RIOTBASE}/core/include/ -I${RIOTBASE}/sys/include/ -I${RIOTBASE}/drivers/include/ -I${RIOTBASE}/pkg/openwsn/RB-1.4/openwsn
 
-build: fetch all
-	
-fetch:
-	make -C $(RIOTBASE)/pkg/openwsn patch
+# build: fetch all
+# 	
+# fetch:
+# 	make -C $(RIOTBASE)/pkg/openwsn patch
+
+export PROJDEPS = openwsn.h
 
 include $(RIOTBASE)/Makefile.include
+
+openwsn.h:
+	$(MAKE) -C $(EXTERNAL_MODULES) patch
