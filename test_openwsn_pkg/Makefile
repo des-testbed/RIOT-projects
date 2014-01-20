@@ -51,5 +51,8 @@ export PROJDEPS = openwsn.h
 
 include $(RIOTBASE)/Makefile.include
 
+distclean: clean
+	$(MAKE) -C $(EXTERNAL_MODULES) distclean
+
 openwsn.h:
-	$(MAKE) -C $(EXTERNAL_MODULES) patch
+	$(MAKE) -C $(EXTERNAL_MODULES) all
