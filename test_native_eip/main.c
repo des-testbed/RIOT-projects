@@ -30,7 +30,6 @@ void t2(void)
     char oldx = 0;
     while(1) {
         char x = c;
-        x++;
         if (x != oldx) {
             putchar(x);
             oldx = x;
