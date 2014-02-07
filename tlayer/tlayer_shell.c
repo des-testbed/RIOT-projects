@@ -9,6 +9,7 @@
 
 #include "sixlowpan.h"
 #include "ipv6.h"
+#include "net_if.h"
 #include "sixlowpan/ndp.h"
 
 #include "destiny/socket.h"
@@ -36,7 +37,8 @@ char udp_server_stack_buffer[UDP_APP_STACK_SIZE];
 void print_ipv6_addr(const ipv6_addr_t *ipv6_addr)
 {
     char addr_str[IPV6_MAX_ADDR_STR_LEN];
-    printf("%s\n", ipv6_addr_to_str(addr_str, ipv6_addr));
+    printf("%s\n", ipv6_addr_to_str(addr_str, IPV6_MAX_ADDR_STR_LEN,
+                                    ipv6_addr));
 }
 
 /* initializes node */
@@ -60,50 +62,29 @@ void init(char *str)
 
     ipv6_addr_init(&std_addr, 0xABCD, 0xEF12, 0, 0, 0x1034, 0x00FF, 0xFE00, r_addr);
 
+    if (!net_if_set_hardware_address(0, r_addr)) {
+        printf("Error on setting hardware address %hu\n.", r_addr);
+        return;
+    }
+
     switch(command) {
         case 'h':
             printf("INFO: Initialize as host on radio address %hu\n", r_addr);
-
-            if(r_addr > 255) {
-                printf("ERROR: radio_address not an 8 bit integer\n");
-                return;
-            }
-
-            sixlowpan_lowpan_init(TRANSCEIVER, r_addr, 0);
             break;
 
         case 'r':
             printf("INFO: Initialize as router on radio address %hu\n", r_addr);
-
-            if(r_addr > 255) {
-                printf("ERROR: radio_address not an 8 bit integer\n");
-                return;
-            }
-
-            sixlowpan_lowpan_init(TRANSCEIVER, r_addr, 0);
-            ipv6_init_iface_as_router();
+            ipv6_init_as_router();
             break;
 
         case 'a':
             printf("INFO: Initialize as adhoc router on radio address %hu\n", r_addr);
-
-            if(r_addr > 255) {
-                printf("ERROR: radio_address not an 8 bit integer\n");
-                return;
-            }
-
-            sixlowpan_lowpan_adhoc_init(TRANSCEIVER, &std_addr, r_addr);
+            sixlowpan_lowpan_init_adhoc_interface(0, &std_addr);
             break;
 
         case 'b':
             printf("INFO: Initialize as border router on radio address %hu\n", r_addr);
-
-            if(r_addr > 255) {
-                printf("ERROR: radio_address not an 8 bit integer\n");
-                return;
-            }
-
-            res = sixlowpan_lowpan_border_init(TRANSCEIVER, &std_addr);
+            res = sixlowpan_lowpan_border_init(0);
 
             switch(res) {
                 case(SIXLOWERROR_SUCCESS):
@@ -138,11 +119,13 @@ void init(char *str)
 /* performs 6lowpan bootstrapping */
 void bootstrapping(char *str)
 {
+    (void) str;
     sixlowpan_lowpan_bootstrapping();
 }
 
 void boot_server(char *str)
 {
+    (void) str;
     bootstrapping(NULL);
     vtimer_usleep(1000 * 1000 * 2);
     init_tcp_server_thread(NULL);
@@ -150,15 +133,10 @@ void boot_server(char *str)
 
 void boot_client(char *str)
 {
+    (void) str;
     init_tcp_cht(NULL);
     vtimer_usleep(1000 * 1000 * 2);
     connect_tcp("connect_tcp 2");
-}
-
-/* prints current IPv6 adresses */
-void ip(char *str)
-{
-    ipv6_iface_print_addrs();
 }
 
 /* shows 6lowpan context information */
@@ -166,6 +144,7 @@ void context(char *str)
 {
     uint8_t i;
     lowpan_context_t *context;
+    (void) str;
 
     for(i = 0; i < NDP_6LOWPAN_CONTEXT_MAX; i++) {
         context = lowpan_context_num_lookup(i);
@@ -180,6 +159,7 @@ void context(char *str)
 /* shows info about open sockets */
 void shows(char *str)
 {
+    (void) str;
     destiny_socket_print_sockets();
 }
 
@@ -187,11 +167,13 @@ void shows(char *str)
 #if ENABLE_DEBUG
 void showReas(char *str)
 {
+    (void) str;
     sixlowpan_lowpan_print_reassembly_buffers();
 }
 
 void pfifo_buf(char *str)
 {
+    (void) str;
     sixlowpan_lowpan_print_fifo_buffers();
 }
 #endif
@@ -210,6 +192,7 @@ void kill_process(char *str)
 /* Init TCP server thread */
 void init_tcp_server_thread(char *str)
 {
+    (void) str;
     tcp_server_thread_pid = thread_create(tcp_server_stack_buffer, TCP_APP_STACK_SIZE, PRIORITY_MAIN, CREATE_STACKTEST, init_tcp_server, "init_tcp_server");
     printf("TCP SERVER THREAD PID: %i\n", tcp_server_thread_pid);
 }
@@ -217,6 +200,7 @@ void init_tcp_server_thread(char *str)
 /* Init TCP connection handler thread */
 void init_tcp_cht(char *str)
 {
+    (void) str;
     tcp_cht_pid = thread_create(tcp_cht_stack_buffer,
                                 TCP_APP_STACK_SIZE,
                                 PRIORITY_MAIN,
@@ -280,7 +264,7 @@ void send_tcp_bandwidth_test(char *str)
     total = timex_sub(end, start);
     secs = total.microseconds / 1000000.0f;
     printf("Used power: %f\n", ltc4150_get_total_Joule());
-    printf("Start: %lu, End: %lu, Total: %lu\n", start.microseconds, end.microseconds, total.microseconds);
+    printf("Start: %" PRIu32 ", End: %" PRIu32 ", Total: %" PRIu32 "\n", start.microseconds, end.microseconds, total.microseconds);
     printf("Time: %f seconds, Bandwidth: %f byte/second\n", secs, (count * 48) / secs);
 }
 
@@ -297,6 +281,7 @@ void connect_tcp(char *str)
 void disconnect_tcp(char *str)
 {
     msg_t send_msg;
+    (void) str;
 
     send_msg.content.value = 0;
     msg_send(&send_msg, tcp_cht_pid, 0);
@@ -305,6 +290,7 @@ void disconnect_tcp(char *str)
 /* UDP server thread */
 void init_udp_server_thread(char *str)
 {
+    (void)str;
     udp_server_thread_pid = thread_create(udp_server_stack_buffer, UDP_APP_STACK_SIZE, PRIORITY_MAIN, CREATE_STACKTEST, init_udp_server, "init_udp_server");
     printf("UDP SERVER THREAD PID: %i\n", udp_server_thread_pid);
 }
@@ -357,7 +343,8 @@ void send_udp(char *str)
     total = timex_sub(end, start);
     secs = total.microseconds / 1000000;
     printf("Used power: %f\n", ltc4150_get_total_Joule());
-    printf("Start: %lu, End: %lu, Total: %lu\n", start.microseconds, end.microseconds, total.microseconds);
+    printf("Start: %" PRIu32 ", End: %" PRIu32 ", Total: %" PRIu32 "\n", 
+           start.microseconds, end.microseconds, total.microseconds);
     secs = total.microseconds / 1000000;
     if (!secs) {
         puts("Transmission in no time!");
@@ -370,6 +357,7 @@ void send_udp(char *str)
 
 void close_tcp(char *str)
 {
+    (void)str;
     thread_create(tcp_close_thread_stack, TCP_CLOSE_THREAD_STACK_SIZE, PRIORITY_MAIN,
                   CREATE_STACKTEST, close_tcp_thread, "tcp_close_thread");
 }

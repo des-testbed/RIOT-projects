@@ -13,12 +13,19 @@
 #include "vtimer.h"
 #include "ltc4150.h"
 #include "thread.h"
+#ifdef MODULE_NATIVENET
+#include "nativenet.h"
+#elif MODULE_CC110X_NG
 #include "cc110x_ng.h"
+#endif
 #include "transceiver.h"
 #include "time.h"
 #include "rtc.h"
+#include "net_if.h"
 #include "ipv6.h"
 #include "sixlowpan.h"
+#include "inet_ntop.h"
+#include "destiny/socket.h"
 
 #ifdef MODULE_NATIVENET
 #define TRANSCEIVER_TYPE TRANSCEIVER_NATIVE
@@ -26,10 +33,10 @@
 #define TRANSCEIVER_TYPE TRANSCEIVER_CC1100
 #endif
 
-void print_ipv6_addr(const ipv6_addr_t *ipv6_addr)
+void print_ipv6_addr(ipv6_addr_t *addr)
 {
     char addr_str[IPV6_MAX_ADDR_STR_LEN];
-    printf("%s\n", ipv6_addr_to_str(addr_str, ipv6_addr));
+    printf("%s\n", ipv6_addr_to_str(addr_str, IPV6_MAX_ADDR_STR_LEN, addr));
 }
 
 void printUsage()
@@ -46,7 +53,6 @@ void init(char *str)
 {
     uint16_t r_addr;
     ipv6_addr_t std_addr;
-    size_t str_len = strlen(str);
     char *command = strtok(str, " ");
 
     if ((command = strtok(NULL, " ")) == NULL) {
@@ -63,50 +69,30 @@ void init(char *str)
 
     ipv6_addr_init(&std_addr, 0xABCD, 0, 0, 0, 0x1034, 0x00FF, 0xFE00, r_addr);
 
+    if (!net_if_set_hardware_address(0, r_addr)) {
+        printf("Error on setting hardware address %hu\n.", r_addr);
+        return;
+    }
+
     switch (command[0]) {
         case 'h':
             printf("INFO: Initialize as host on radio address %hu\n", r_addr);
-
-            if (r_addr > 255) {
-                printf("ERROR: radio_address not an 8 bit integer\n");
-                return;
-            }
-
-            sixlowpan_lowpan_init(TRANSCEIVER_TYPE, r_addr, 0);
             break;
 
         case 'r':
             printf("INFO: Initialize as router on radio address %hu\n", r_addr);
-
-            if (r_addr > 255) {
-                printf("ERROR: radio_address not an 8 bit integer\n");
-                return;
-            }
-
-            sixlowpan_lowpan_init(TRANSCEIVER_TYPE, r_addr, 0);
-            ipv6_init_iface_as_router();
+            ipv6_init_as_router();
             break;
 
         case 'a':
             printf("INFO: Initialize as adhoc router on radio address %hu\n", r_addr);
-
-            if (r_addr > 255) {
-                printf("ERROR: radio_address not an 8 bit integer\n");
-                return;
-            }
-
-            sixlowpan_lowpan_adhoc_init(TRANSCEIVER_TYPE, &std_addr, r_addr);
+            sixlowpan_lowpan_init_adhoc_interface(0, &std_addr);
             break;
 
+#ifdef MODULE_SIXLOWBORDER
         case 'b':
             printf("INFO: Initialize as border router on radio address %hu\n", r_addr);
-
-            if (r_addr > 255) {
-                printf("ERROR: radio_address not an 8 bit integer\n");
-                return;
-            }
-
-            int res = sixlowpan_lowpan_border_init(TRANSCEIVER_TYPE, &std_addr);
+            int res = sixlowpan_lowpan_border_init(0);
 
             switch (res) {
                 case (SIXLOWERROR_SUCCESS):
@@ -122,6 +108,7 @@ void init(char *str)
                     printf("ERROR: Unknown error (%d).\n", res);
                     break;
             }
+#endif
 
             break;
 
@@ -134,12 +121,14 @@ void init(char *str)
 
 void bootstrapping(char *str)
 {
+    (void)str;
     sixlowpan_lowpan_bootstrapping();
 }
 
 void send_packet(char *str)
 {
     uint8_t test[2];
+    (void)str;
     test[0] = 30;
     test[1] = 98;
 
@@ -158,13 +147,9 @@ void send_packet(char *str)
     }
 }
 
-void ip(char *str)
-{
-    ipv6_iface_print_addrs();
-}
-
 void context(char *str)
 {
+    (void)str;
     uint8_t i;
     lowpan_context_t *context;
 
@@ -182,7 +167,6 @@ const shell_command_t shell_commands[] = {
     {"send", "", send_packet},
     {"init", "", init},
     {"boot", "", bootstrapping},
-    {"ip", "", ip},
     {"context", "", context},
     {NULL, NULL, NULL}
 };
