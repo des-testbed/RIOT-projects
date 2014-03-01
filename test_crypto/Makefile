@@ -1,6 +1,9 @@
 export PROJECT = test_crypto
 include ../Makefile.applications_common
 
+#These boards do not have enough ROM:
+export BOARD_BLACKLIST = wsn430-v1_3b msb-430h chronos msb-430 telosb redbee-econotag wsn430-v1_4
+
 # list here all modules that are used in your project
 USEMODULE += posix
 USEMODULE += uart0
