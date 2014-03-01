@@ -2,7 +2,8 @@ export PROJECT = tlayer
 
 include ../Makefile.applications_common
 
-export BOARD_BLACKLIST = msb-430
+# Transceivers are only defined for these boards in this Makefile:
+export BOARD_WHITELIST = msba2 native
 
 USEMODULE += auto_init
 USEMODULE += vtimer
