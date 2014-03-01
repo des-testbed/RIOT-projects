@@ -1,3 +1,8 @@
 export BOARD ?= native
 export RIOTBASE ?= $(CURDIR)/../../RIOT/
 export QUIET ?= 1
+
+THIRDPARTYBOARDS = stm32f4discovery agilefox
+ifneq (,$(filter $(BOARD),$(THIRDPARTYBOARDS)))
+	include ../Makefile.thirdparty
+endif
