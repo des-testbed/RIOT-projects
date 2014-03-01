@@ -1,9 +1,9 @@
 export PROJECT = test_net_if
-export BOARD ?= agile_fox
+export BOARD ?= agilefox
 include ../Makefile.applications_common
 
 # These boards have an at86rf231:
-BOARD_WHITELIST = agile_fox
+BOARD_WHITELIST = agilefox
 
 USEMODULE += auto_init
 USEMODULE += transceiver
