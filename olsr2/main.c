@@ -16,16 +16,16 @@
 
 #include <olsr2/olsr2.h>
 
+#define IF_ID (0)
+
 #if defined(BOARD_NATIVE)
 #include <unistd.h>
-static uint8_t _trans_type = TRANSCEIVER_NATIVE;
 static uint16_t get_node_id(void) {
 	return getpid();
 }
 #elif defined(BOARD_MSBA2)
 #include <config.h>
 
-static uint8_t _trans_type = TRANSCEIVER_CC1100;
 static uint16_t generate_node_id(void) {
 	int _node_id;
 	const int size = 1024;
@@ -76,9 +76,9 @@ static void ping(char* str) {
 	}
 
 	char addr_str[IPV6_MAX_ADDR_STR_LEN];
-	ipv6_addr_to_str(addr_str, dest);
+	ipv6_addr_to_str(addr_str, IPV6_MAX_ADDR_STR_LEN, dest);
 
-	char payload[] = "foobar";
+	uint8_t payload[] = "foobar";
 
 	for (int i = 0; i < packets; ++i) {
 		printf("sending %u bytes to %s\n", sizeof payload, addr_str);
@@ -104,10 +104,22 @@ static void set_id(char* str) {
 }
 
 static void init(char *str) {
+	ipv6_addr_t tmp;
 
 	rtc_enable();
 	genrand_init(get_node_id());
-	sixlowpan_lowpan_init(_trans_type, get_node_id(), 0);
+	net_if_set_hardware_address(IF_ID, get_node_id());
+
+	ipv6_addr_set_link_local_prefix(&tmp);
+	ipv6_addr_set_by_eui64(&tmp, IF_ID, &tmp);
+	ipv6_net_if_add_addr(IF_ID, &tmp, NDP_ADDR_STATE_PREFERRED,
+                              NDP_OPT_PI_VLIFETIME_INFINITE,
+                              NDP_OPT_PI_PLIFETIME_INFINITE, 0);
+
+	ipv6_addr_set_all_nodes_addr(&tmp);
+	ipv6_net_if_add_addr(IF_ID, &tmp, NDP_ADDR_STATE_PREFERRED,
+                              NDP_OPT_PI_VLIFETIME_INFINITE,
+                              NDP_OPT_PI_PLIFETIME_INFINITE, 0);
 
 	olsr_init();
 }
