@@ -44,6 +44,6 @@ ifeq ($(BOARD),msba2)
 	export CFLAGS += -DBOARD_MSBA2 -DINIT_ON_START -DENABLE_LEDS
 endif
 
-export INCLUDES += -I$(RIOTBASE)/sys/net/include
+export INCLUDES += -I$(RIOTBASE)/sys/net/include -I$(RIOTBASE)/sys/posix/include
 
 include $(RIOTBASE)/Makefile.include
