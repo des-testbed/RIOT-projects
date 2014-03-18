@@ -25,7 +25,7 @@ int test_right_set_channel(void)
 {
     uint16_t channel = cc2420_get_channel();
 
-    if (channel == 26) {
+    if (channel > 26) {
         channel = 11;
     }
     else {
@@ -72,7 +72,7 @@ int test_get_channel(void)
     uint16_t asserted_channel = cc2420_get_channel();
     uint16_t got_channel;
     
-    asserted_channel += 1;
+    asserted_channel++;
     
     if (asserted_channel > 26) {
         asserted_channel = 11;
@@ -145,47 +145,47 @@ int test_get_set_address_long(void)
 {
     uint64_t addr = 0x0000000000000000, new_addr;
 
-    new_addr = cc2420_set_address(addr);
+    new_addr = cc2420_set_address_long(addr);
 
     if (new_addr != addr) {
-        printf("new_addr [%" PRIu64 "] != addr [%" PRIu64 "] after set_address\n", new_addr, addr);
+        printf("new_addr [%" PRIu64 "] != addr [%" PRIu64 "] after set_address_long\n", new_addr, addr);
         return 0;
     }
 
-    new_addr = cc2420_get_address();
+    new_addr = cc2420_get_address_long();
 
     if (new_addr != addr) {
-        printf("new_addr [%" PRIu64 "] != addr [%" PRIu64 "] after get_address\n", new_addr, addr);
+        printf("new_addr [%" PRIu64 "] != addr [%" PRIu64 "] after get_address_long\n", new_addr, addr);
         return 0;
     }
 
     addr = 0xffffffffffffffff;
-    new_addr = cc2420_set_address(addr);
+    new_addr = cc2420_set_address_long(addr);
 
     if (new_addr != addr) {
-        printf("new_addr [%" PRIu64 "] != addr [%" PRIu64 "] after set_address\n", new_addr, addr);
+        printf("new_addr [%" PRIu64 "] != addr [%" PRIu64 "] after set_address_long\n", new_addr, addr);
         return 0;
     }
 
-    new_addr = cc2420_get_address();
+    new_addr = cc2420_get_address_long();
 
     if (new_addr != addr) {
-        printf("new_addr [%" PRIu64 "] != addr [%" PRIu64 "] after get_address\n", new_addr, addr);
+        printf("new_addr [%" PRIu64 "] != addr [%" PRIu64 "] after get_address_long\n", new_addr, addr);
         return 0;
     }
 
     addr = 0x0000000002bb3f52; /* randomly chosen by fair dice roll ;-) */
-    new_addr = cc2420_set_address(addr);
+    new_addr = cc2420_set_address_long(addr);
 
     if (new_addr != addr) {
-        printf("new_addr [%" PRIu64 "] != addr [%" PRIu64 "] after set_address\n", new_addr, addr);
+        printf("new_addr [%" PRIu64 "] != addr [%" PRIu64 "] after set_address_long\n", new_addr, addr);
         return 0;
     }
 
-    new_addr = cc2420_get_address();
+    new_addr = cc2420_get_address_long();
 
     if (new_addr != addr) {
-        printf("new_addr [%" PRIu64 "] != addr [%" PRIu64 "] after get_address\n", new_addr, addr);
+        printf("new_addr [%" PRIu64 "] != addr [%" PRIu64 "] after get_address_long\n", new_addr, addr);
         return 0;
     }
 
@@ -196,47 +196,47 @@ int test_get_set_pan(void)
 {
     uint16_t pan = 0x0000, new_pan;
 
-    new_pan = cc2420_set_address(pan);
+    new_pan = cc2420_set_pan(pan);
 
     if (new_pan != pan) {
-        printf("new_pan [%d] != pan [%d] after set_address\n", new_pan, pan);
+        printf("Anew_pan [%d] != pan [%d] after set_pan\n", new_pan, pan);
         return 0;
     }
 
-    new_pan = cc2420_get_address();
+    new_pan = cc2420_get_pan();
 
     if (new_pan != pan) {
-        printf("new_pan [%d] != pan [%d] after get_address\n", new_pan, pan);
+        printf("Anew_pan [%d] != pan [%d] after get_pan\n", new_pan, pan);
         return 0;
     }
 
     pan = 0xffff;
-    new_pan = cc2420_set_address(pan);
+    new_pan = cc2420_set_pan(pan);
 
     if (new_pan != pan) {
-        printf("new_pan [%d] != pan [%d] after set_address\n", new_pan, pan);
+        printf("Bnew_pan [%d] != pan [%d] after set_pan\n", new_pan, pan);
         return 0;
     }
 
-    new_pan = cc2420_get_address();
+    new_pan = cc2420_get_pan();
 
     if (new_pan != pan) {
-        printf("new_pan [%d] != pan [%d] after get_address\n", new_pan, pan);
+        printf("Bnew_pan [%d] != pan [%d] after get_pan\n", new_pan, pan);
         return 0;
     }
 
     pan = 0x0004; /* randomly chosen by fair dice roll ;-) */
-    new_pan = cc2420_set_address(pan);
+    new_pan = cc2420_set_pan(pan);
 
     if (new_pan != pan) {
-        printf("new_pan [%d] != pan [%d] after set_address\n", new_pan, pan);
+        printf("Cnew_pan [%d] != pan [%d] after set_pan\n", new_pan, pan);
         return 0;
     }
 
-    new_pan = cc2420_get_address();
+    new_pan = cc2420_get_pan();
 
     if (new_pan != pan) {
-        printf("new_pan [%d] != pan [%d] after get_address\n", new_pan, pan);
+        printf("Cnew_pan [%d] != pan [%d] after get_pan", new_pan, pan);
         return 0;
     }
 
@@ -248,26 +248,31 @@ int main(void)
     transceiver_init(TRANSCEIVER_CC2420);
 
     if (!test_set_channel()) {
-        printf("test_set_channel failed.\n");
+        printf("test_set_channel() failed!\n");
         return 1;
     };
+    printf("test_set_channel() pass.\n");
     if (!test_get_channel()) {
-        printf("test_get_channel failed.\n");
+        printf("test_get_channel() failed!\n");
         return 1;
     };
+    printf("test_get_channel() pass.\n");
     if (!test_get_set_address()) {
-        printf("test_get_set_address failed.\n");
+        printf("test_get_set_address() failed!\n");
         return 1;
     };
+    printf("test_get_set_address() pass.\n");
     if (!test_get_set_address_long()) {
-        printf("test_get_set_address_long failed.\n");
+        printf("test_get_set_address_long() failed!\n");
         return 1;
     };
+    printf("test_get_set_address_long() pass.\n");
     if (!test_get_set_pan()) {
-        printf("test_get_set_pan failed.\n");
+        printf("test_get_set_pan() failed!\n");
         return 1;
     };
+    printf("test_get_set_pan() pass.\n");
 
-    printf("All tests successful.\n");
+    printf("\nAll tests successful.\n");
     return 0;
 }

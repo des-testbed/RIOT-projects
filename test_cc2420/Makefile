@@ -10,7 +10,7 @@
 # name of your project
 export PROJECT = test_net_if
 
-BOARD_WHITELIST := telosb wsn430-v1_4 
+BOARD_WHITELIST := telosb z1 wsn430-v1_4 
 BOARD_BLACKLIST :=  
 
 # for easy switching of boards
