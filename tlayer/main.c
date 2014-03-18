@@ -15,6 +15,7 @@ static transceiver_command_t tcmd;
 
 void init_tl(char *str)
 {
+    (void)str;
     destiny_init_transport_layer();
 }
 
@@ -40,7 +41,6 @@ void ignore(char *addr)
 const shell_command_t shell_commands[] = {
     {"init", "initializes node", init},
     {"boot", "performs 6lowpan bootstrapping", bootstrapping},
-    {"ip", "shows current IPv6 addresses", ip},
     {"shows", "Show Sockets", shows},
     {"context", "shows 6lowpan context information", context},
     {"init_udp_server_thread", "initializes UDP server", init_udp_server_thread},

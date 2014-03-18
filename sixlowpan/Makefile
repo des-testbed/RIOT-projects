@@ -10,6 +10,8 @@
 # name of your project
 export PROJECT = sixlowpan
 
+QUIET?=1
+
 # for easy switching of boards
 ifeq ($(strip $(BOARD)),)
 	export BOARD = native
@@ -44,7 +46,7 @@ else ifeq ($(BOARD),native)
 	USEMODULE += nativenet
 endif
 
-export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTCPU)/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/ -I$(RIOTBASE)/drivers/cc110x_ng/include/ -I$(RIOTBASE)/sys/net/include/
+export INCLUDES = -I$(RIOTBASE)/sys/net/include/
 
 include $(RIOTBASE)/Makefile.include
 endif
