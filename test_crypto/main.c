@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Freie Universität Berlin
+ * Copyright (C) 2014 Freie Universität Berlin
  *
  * This file is subject to the terms and conditions of the GNU Lesser General
  * Public License. See the file LICENSE in the top level directory for more
@@ -17,10 +17,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <posix_io.h>
-#include <board_uart0.h>
-#include <shell.h>
-#include <shell_commands.h>
+#include "posix_io.h"
+#include "board_uart0.h"
+#include "shell.h"
+#include "shell_commands.h"
 
 #include "crypto/3des.h"
 #include "crypto/aes.h"
@@ -29,6 +29,7 @@
 #include "crypto/twofish.h"
 #include "crypto/sha256.h"
 
+#define SHELL_BUFSIZE   (UART0_BUFSIZE)
 
 static int shell_readc(void) {
     char c = 0;
@@ -68,9 +69,7 @@ int main(void) {
     printf("twofish:  Preferred block size: %i\n", size);
 
 
-    shell_init(&shell, NULL, shell_readc, shell_putchar);
+    shell_init(&shell, NULL, SHELL_BUFSIZE, shell_readc, shell_putchar);
     shell_run(&shell);
     return 0;
 }
-
-

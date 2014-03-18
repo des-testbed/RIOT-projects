@@ -23,7 +23,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "lpc23xx.h"    /* LPC23xx definitions */
+
 #include "i2c.h"
 #include "gpioint.h"
 #include "hwtimer.h"
@@ -55,4 +55,3 @@ int main(void)
     srf02_start_ranging(SRF02_REAL_RANGING_MODE_CM);
     return EXIT_SUCCESS;
 }
-

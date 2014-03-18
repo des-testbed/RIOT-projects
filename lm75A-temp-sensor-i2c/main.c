@@ -21,7 +21,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "lpc23xx.h"    /* LPC23xx/24xx definitions */
+
 #include "i2c.h"
 #include "gpioint.h"
 #include "hwtimer.h"
@@ -76,4 +76,3 @@ int main(void)
 
     return EXIT_SUCCESS;
 }
-

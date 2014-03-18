@@ -1,22 +1,8 @@
-####
-#### Sample Makefile for building apps with the RIOT OS
-####
-#### The Sample Filesystem Layout is:
-#### /this makefile
-#### ../RIOT 
-#### ../../boards   for board definitions (if you have one or more)
-####
-
-# name of your project
 export PROJECT = test_crypto
+include ../Makefile.applications_common
 
-# for easy switching of boards
-ifeq ($(strip $(BOARD)),)
-    export BOARD = native
-endif
-
-# this has to be the absolute path of the RIOT-base dir
-export RIOTBASE =$(CURDIR)/../../RIOT
+#These boards do not have enough ROM:
+export BOARD_BLACKLIST = wsn430-v1_3b msb-430h chronos msb-430 telosb redbee-econotag wsn430-v1_4
 
 # list here all modules that are used in your project
 USEMODULE += posix
@@ -31,7 +17,5 @@ USEMODULE += crypto_rc5
 USEMODULE += crypto_skipjack
 USEMODULE += crypto_twofish
 USEMODULE += crypto_sha256
-
-export INCLUDES = -I${RIOTBASE}/core/include/ -I${RIOTBASE}/sys/include/ -I${RIOTBASE}/drivers/include/
 
 include $(RIOTBASE)/Makefile.include
