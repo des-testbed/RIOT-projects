@@ -20,6 +20,7 @@
 
 #if defined(BOARD_NATIVE)
 #include <unistd.h>
+#include <sys/types.h>
 static uint16_t get_node_id(void) {
 	return getpid();
 }
@@ -63,15 +64,20 @@ static uint16_t get_node_id(void) {
 
 #ifdef ENABLE_NAME
 
-static void ping(char* str) {
+static void ping(int argc, char **argv) {
 	static uint16_t id = 0;
+
+	if (argc < 2) {
+		puts("usage: ping [node]");
+		return;
+	}
+
 	id++;
-	str += strlen("ping ");
 	int packets = 10;
 
-	ipv6_addr_t* dest = get_ip_by_name(str);
+	ipv6_addr_t* dest = get_ip_by_name(argv[1]);
 	if (dest == NULL) {
-		printf("Unknown node: %s\n", str);
+		printf("Unknown node: %s\n", argv[1]);
 		return;
 	}
 
@@ -88,22 +94,24 @@ static void ping(char* str) {
 }
 #endif /* ENABLE_NAME */
 
-static void set_id(char* str) {
-	str += strlen("set_id ");
-	uint16_t id = atoi(str);
+static void set_id(int argc, char **argv) {
+	if (argc < 2) {
+		puts("usage: set_id [id] [name]");
+		return;
+	}
 
+	uint16_t id = atoi(argv[1]);
 	sysconfig.id = id;
 	sysconfig.radio_address = (uint8_t) id;
 
 #ifdef ENABLE_NAME
-	char* name = strstr(str, " ") + 1;
-	if (name != NULL)
-		strncpy(sysconfig.name, name, sizeof sysconfig.name);
+	if (argc > 2)
+		strncpy(sysconfig.name, argv[2], sizeof sysconfig.name);
 #endif
 	config_save();
 }
 
-static void init(char *str) {
+static void init(int argc, char **argv) {
 	ipv6_addr_t tmp;
 
 	rtc_enable();
@@ -129,7 +137,7 @@ const shell_command_t shell_commands[] = {
 	{"init", "start the IP stack with OLSRv2", init},
 #endif
 	{"routes", "print all known nodes and routes", print_topology_set},
-	{"set_id", "", set_id},
+	{"set_id", "set node ID and name", set_id},
 #ifdef ENABLE_NAME
 	{"ping", "send packets to a node", ping},
 #endif
@@ -138,7 +146,7 @@ const shell_command_t shell_commands[] = {
 
 int main(void) {
 #ifdef INIT_ON_START
-	init(0);
+	init(0, 0);
 #endif
 
 	posix_open(uart0_handler_pid, 0);
