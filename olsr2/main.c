@@ -27,37 +27,7 @@ static uint16_t get_node_id(void) {
 #elif defined(BOARD_MSBA2)
 #include <config.h>
 
-static uint16_t generate_node_id(void) {
-	int _node_id;
-	const int size = 1024;
-
-	uint8_t* buffer = malloc(size);
-	for (int i=0; i<size; ++i)
-		_node_id += buffer[i];
-	free(buffer);
-
-	genrand_init(_node_id);
-	_node_id = (uint16_t) genrand_uint32();
-
-	return (uint16_t) _node_id;
-}
-
 static uint16_t get_node_id(void) {
-	static bool first_run = true;;
-
-	if (first_run) {
-		first_run = false;
-		config_load();
-
-		if (sysconfig.radio_address == 0) {
-			sysconfig.id = generate_node_id();
-			sysconfig.radio_address = (uint8_t) sysconfig.id;
-			sysconfig.radio_channel = 1;
-
-			config_save();
-		}
-	}
-
 	return sysconfig.id;
 }
 #endif
@@ -145,6 +115,7 @@ const shell_command_t shell_commands[] = {
 };
 
 int main(void) {
+	config_load();
 #ifdef INIT_ON_START
 	init(0, 0);
 #endif
